@@ -18,7 +18,7 @@ export function CheckoutPage() {
   const [, navigate] = useLocation();
 
   const [step, setStep] = useState<Step>('cart');
-  const [paymentMethod, setPaymentMethod] = useState<'etisalat_cash'>('etisalat_cash');
+  const [paymentMethod, setPaymentMethod] = useState<'instapay' | 'vodafone_cash'>('instapay');
   const [transactionId, setTransactionId] = useState('');
   const [copied, setCopied] = useState(false);
   const [orderId, setOrderId] = useState<string | null>(null);
@@ -40,7 +40,7 @@ export function CheckoutPage() {
         paymentMethod,
         shippingAddress: formData.address,
         notes: formData.notes,
-        transactionId: paymentMethod === 'etisalat_cash' ? transactionId : undefined,
+        transactionId: transactionId.trim() || undefined,
       });
       setOrderId(order.id as string);
       clear();
@@ -358,96 +358,165 @@ export function CheckoutPage() {
                     }}
                   >
                     <h3 className={`text-lg font-bold font-arabic mb-6 pb-3 border-b ${isRTL ? 'text-right' : ''}`} style={{ color: '#23432E', borderColor: '#EDE5D4' }}>
-                      {isRTL ? 'طريقة الدفع المعتمدة' : 'Payment Method'}
+                      {isRTL ? 'طريقة الدفع المعتمدة' : 'Select Payment Method'}
                     </h3>
 
                     <div className="space-y-4">
+                      {/* Method 1: InstaPay */}
                       <div
-                        className={`p-5 rounded-2xl flex items-center justify-between cursor-pointer border-2 ${isRTL ? 'flex-row-reverse' : ''}`}
+                        onClick={() => {
+                          setPaymentMethod('instapay');
+                          setCopied(false);
+                        }}
+                        className={`p-5 rounded-2xl flex items-center justify-between cursor-pointer border-2 transition-all ${isRTL ? 'flex-row-reverse' : ''}`}
                         style={{
-                          borderColor: '#23432E',
-                          background: 'rgba(35,67,46,0.03)'
+                          borderColor: paymentMethod === 'instapay' ? '#23432E' : '#D6C6A8',
+                          background: paymentMethod === 'instapay' ? 'rgba(35,67,46,0.05)' : '#FFFDF7'
                         }}
                       >
-                        <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                          <div className="w-5 h-5 rounded-full border-2 flex items-center justify-center" style={{ borderColor: '#23432E' }}>
-                            <div className="w-2.5 h-2.5 rounded-full" style={{ background: '#23432E' }} />
+                        <div className={`flex items-center gap-3.5 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                          <div
+                            className="w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all"
+                            style={{ borderColor: paymentMethod === 'instapay' ? '#23432E' : '#D6C6A8' }}
+                          >
+                            {paymentMethod === 'instapay' && (
+                              <div className="w-2.5 h-2.5 rounded-full" style={{ background: '#23432E' }} />
+                            )}
                           </div>
                           <div className={isRTL ? 'text-right' : ''}>
-                            <p className="font-bold text-sm font-arabic" style={{ color: '#23432E' }}>
-                              {isRTL ? 'محفظة إلكترونية (اتصالات كاش / فودافون / أورنج)' : 'Etisalat Cash / Mobile Wallet'}
-                            </p>
-                            <p className="text-xs font-arabic" style={{ color: '#777363' }}>
-                              {isRTL ? 'تحويل فوري ومباشر إلى محفظة الدار' : 'Instant direct wallet transfer'}
+                            <div className="flex items-center gap-2">
+                              <p className="font-bold text-base font-arabic" style={{ color: '#23432E' }}>
+                                {isRTL ? 'إنستاباي (InstaPay)' : 'InstaPay'}
+                              </p>
+                              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#EDE5D4] text-[#23432E]">
+                                {isRTL ? 'تحويل فوري' : 'Instant'}
+                              </span>
+                            </div>
+                            <p className="text-xs font-arabic text-[#777363] mt-0.5">
+                              {isRTL ? 'تحويل فوري ومجاني عبر تطبيق إنستاباي' : 'Direct instant transfer via InstaPay app'}
                             </p>
                           </div>
                         </div>
-                        <CreditCard size={22} style={{ color: '#B49A63' }} />
+                        <CreditCard size={22} style={{ color: paymentMethod === 'instapay' ? '#23432E' : '#B49A63' }} />
                       </div>
 
-                      {/* Payment Steps */}
+                      {/* Method 2: Vodafone Cash */}
                       <div
-                        className={`p-6 rounded-2xl ${isRTL ? 'text-right' : ''}`}
-                        style={{ background: '#F5F0E3', border: '1px solid #D6C6A8' }}
+                        onClick={() => {
+                          setPaymentMethod('vodafone_cash');
+                          setCopied(false);
+                        }}
+                        className={`p-5 rounded-2xl flex items-center justify-between cursor-pointer border-2 transition-all ${isRTL ? 'flex-row-reverse' : ''}`}
+                        style={{
+                          borderColor: paymentMethod === 'vodafone_cash' ? '#23432E' : '#D6C6A8',
+                          background: paymentMethod === 'vodafone_cash' ? 'rgba(35,67,46,0.05)' : '#FFFDF7'
+                        }}
                       >
-                        <p className="text-xs font-bold font-arabic uppercase tracking-wider mb-3 flex items-center gap-2" style={{ color: '#23432E' }}>
-                          <span className="w-5 h-5 rounded-full flex items-center justify-center text-xs font-black" style={{ background: '#B49A63', color: '#FFFDF7' }}>1</span>
-                          {isRTL ? 'حوّل المبلغ الإجمالي إلى رقم المحفظة الرسمي:' : 'Transfer the total amount to this wallet number:'}
-                        </p>
-                        <div
-                          className={`flex items-center justify-between p-4 rounded-xl ${isRTL ? 'flex-row-reverse' : ''}`}
-                          style={{ background: '#FFFDF7', border: '1px solid #D6C6A8' }}
-                        >
-                          <div>
-                            <p className="font-mono font-black text-xl tracking-wider" style={{ color: '#23432E' }}>01148998027</p>
-                            <p className="text-xs font-arabic" style={{ color: '#777363' }}>
-                              {isRTL ? 'محفظة دار الرحاب للنشر والتوزيع' : 'Dar Al-Rehab Official Wallet'}
+                        <div className={`flex items-center gap-3.5 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                          <div
+                            className="w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all"
+                            style={{ borderColor: paymentMethod === 'vodafone_cash' ? '#23432E' : '#D6C6A8' }}
+                          >
+                            {paymentMethod === 'vodafone_cash' && (
+                              <div className="w-2.5 h-2.5 rounded-full" style={{ background: '#23432E' }} />
+                            )}
+                          </div>
+                          <div className={isRTL ? 'text-right' : ''}>
+                            <div className="flex items-center gap-2">
+                              <p className="font-bold text-base font-arabic" style={{ color: '#23432E' }}>
+                                {isRTL ? 'فودافون كاش (Vodafone Cash)' : 'Vodafone Cash'}
+                              </p>
+                              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#EDE5D4] text-[#23432E]">
+                                {isRTL ? 'محفظة إلكترونية' : 'Wallet'}
+                              </span>
+                            </div>
+                            <p className="text-xs font-arabic text-[#777363] mt-0.5">
+                              {isRTL ? 'تحويل فوري ومباشر إلى محفظة فودافون كاش' : 'Direct transfer to Vodafone Cash wallet'}
                             </p>
                           </div>
-                          <button
-                            type="button"
-                            onClick={() => {
-                              navigator.clipboard.writeText('01148998027');
-                              setCopied(true);
-                              setTimeout(() => setCopied(false), 2000);
-                            }}
-                            className="flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-bold font-arabic transition-all"
-                            style={{
-                              background: copied ? '#23432E' : '#EDE5D4',
-                              color: copied ? '#FFFDF7' : '#23432E',
-                              border: '1px solid #D6C6A8'
-                            }}
-                          >
-                            {copied ? <Check size={14} /> : <Copy size={14} />}
-                            <span>{copied ? (isRTL ? 'تم النسخ!' : 'Copied!') : (isRTL ? 'نسخ الرقم' : 'Copy')}</span>
-                          </button>
                         </div>
-
-                        <div className="mt-5">
-                          <label className="block text-xs font-bold font-arabic mb-2 flex items-center gap-2" style={{ color: '#23432E' }}>
-                            <span className="w-5 h-5 rounded-full flex items-center justify-center text-xs font-black" style={{ background: '#23432E', color: '#FFFDF7' }}>2</span>
-                            {isRTL ? 'أدخل رقم العملية / المرجع من رسالة التحويل' : 'Enter Transaction ID'} <span style={{ color: '#B49A63' }}>*</span>
-                          </label>
-                          <input
-                            required
-                            value={transactionId}
-                            onChange={(e) => setTransactionId(e.target.value)}
-                            dir="ltr"
-                            className="w-full px-4 py-3.5 rounded-xl font-bold text-sm transition-all focus:outline-none text-left"
-                            style={{
-                              background: '#FFFDF7',
-                              border: '1px solid #D6C6A8',
-                              color: '#263A2C'
-                            }}
-                            placeholder={isRTL ? 'مثال: TXN123456789' : 'e.g. TXN123456789'}
-                          />
-                          <p className="text-xs mt-2 font-arabic" style={{ color: '#777363' }}>
-                            {isRTL
-                              ? 'ستجد رقم العملية في رسالة التأكيد النصية (SMS) المرسلة من المحفظة.'
-                              : 'You will find the transaction reference number in the SMS confirmation from your wallet.'}
-                          </p>
-                        </div>
+                        <CreditCard size={22} style={{ color: paymentMethod === 'vodafone_cash' ? '#23432E' : '#B49A63' }} />
                       </div>
+
+                      {/* Active Method Payment Steps */}
+                      {(() => {
+                        const activeNumber = paymentMethod === 'instapay' ? '01154761493' : '01062260194';
+                        const activeLabel = paymentMethod === 'instapay'
+                          ? (isRTL ? 'حساب إنستاباي دار الرحاب للنشر والتوزيع' : 'Dar Al-Rehab InstaPay Account')
+                          : (isRTL ? 'محفظة فودافون كاش دار الرحاب للنشر والتوزيع' : 'Dar Al-Rehab Vodafone Cash Wallet');
+
+                        return (
+                          <div
+                            className={`p-6 rounded-2xl ${isRTL ? 'text-right' : ''}`}
+                            style={{ background: '#F5F0E3', border: '1px solid #D6C6A8' }}
+                          >
+                            <p className="text-xs font-bold font-arabic uppercase tracking-wider mb-3 flex items-center gap-2" style={{ color: '#23432E' }}>
+                              <span className="w-5 h-5 rounded-full flex items-center justify-center text-xs font-black" style={{ background: '#B49A63', color: '#FFFDF7' }}>1</span>
+                              {paymentMethod === 'instapay'
+                                ? (isRTL ? 'حوّل المبلغ الإجمالي إلى حساب إنستاباي التالي:' : 'Transfer the total amount to this InstaPay number:')
+                                : (isRTL ? 'حوّل المبلغ الإجمالي إلى رقم محفظة فودافون كاش:' : 'Transfer the total amount to this Vodafone Cash wallet:')}
+                            </p>
+                            <div
+                              className={`flex items-center justify-between p-4 rounded-xl ${isRTL ? 'flex-row-reverse' : ''}`}
+                              style={{ background: '#FFFDF7', border: '1px solid #D6C6A8' }}
+                            >
+                              <div>
+                                <p className="font-mono font-black text-2xl tracking-wider" style={{ color: '#23432E' }}>
+                                  {activeNumber}
+                                </p>
+                                <p className="text-xs font-arabic font-bold text-[#777363] mt-0.5">
+                                  {activeLabel}
+                                </p>
+                              </div>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  navigator.clipboard.writeText(activeNumber);
+                                  setCopied(true);
+                                  setTimeout(() => setCopied(false), 2000);
+                                }}
+                                className="flex items-center gap-1.5 px-4 py-2.5 rounded-full text-xs font-bold font-arabic transition-all shadow-xs"
+                                style={{
+                                  background: copied ? '#23432E' : '#EDE5D4',
+                                  color: copied ? '#FFFDF7' : '#23432E',
+                                  border: '1px solid #D6C6A8'
+                                }}
+                              >
+                                {copied ? <Check size={14} /> : <Copy size={14} />}
+                                <span>{copied ? (isRTL ? 'تم النسخ!' : 'Copied!') : (isRTL ? 'نسخ الرقم' : 'Copy')}</span>
+                              </button>
+                            </div>
+
+                            <div className="mt-5">
+                              <label className="block text-xs font-bold font-arabic mb-2 flex items-center gap-2" style={{ color: '#23432E' }}>
+                                <span className="w-5 h-5 rounded-full flex items-center justify-center text-xs font-black" style={{ background: '#23432E', color: '#FFFDF7' }}>2</span>
+                                {paymentMethod === 'instapay'
+                                  ? (isRTL ? 'أدخل الرقم المرجعي للتحويل (Reference No) من تطبيق إنستاباي' : 'Enter InstaPay Reference Number')
+                                  : (isRTL ? 'أدخل رقم العملية / المرجع من رسالة فودافون كاش' : 'Enter Vodafone Cash Transaction ID')}{' '}
+                                <span style={{ color: '#B49A63' }}>*</span>
+                              </label>
+                              <input
+                                required
+                                value={transactionId}
+                                onChange={(e) => setTransactionId(e.target.value)}
+                                dir="ltr"
+                                className="w-full px-4 py-3.5 rounded-xl font-bold text-sm transition-all focus:outline-none text-left"
+                                style={{
+                                  background: '#FFFDF7',
+                                  border: '1px solid #D6C6A8',
+                                  color: '#263A2C'
+                                }}
+                                placeholder={paymentMethod === 'instapay' ? (isRTL ? 'مثال: 948271038' : 'e.g. 948271038') : (isRTL ? 'مثال: TXN123456789' : 'e.g. TXN123456789')}
+                              />
+                              <p className="text-xs mt-2 font-arabic" style={{ color: '#777363' }}>
+                                {paymentMethod === 'instapay'
+                                  ? (isRTL ? 'ستجد الرقم المرجعي بعد إتمام التحويل في تطبيق إنستاباي.' : 'You will find the reference number on your InstaPay receipt.')
+                                  : (isRTL ? 'ستجد رقم العملية في رسالة التأكيد النصية (SMS) المرسلة من فودافون كاش.' : 'You will find the transaction ID in the Vodafone Cash confirmation SMS.')}
+                              </p>
+                            </div>
+                          </div>
+                        );
+                      })()}
                     </div>
                   </div>
                 </div>
@@ -488,7 +557,7 @@ export function CheckoutPage() {
 
                   <div className="space-y-3">
                     {(() => {
-                      const isPaymentIncomplete = paymentMethod === 'etisalat_cash' && !transactionId.trim();
+                      const isPaymentIncomplete = !transactionId.trim();
                       const isDisabled = !profile || createOrder.isPending || !formData.address.trim() || !formData.phone.trim() || isPaymentIncomplete;
 
                       return (
