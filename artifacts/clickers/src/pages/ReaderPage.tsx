@@ -33,21 +33,21 @@ Kairos was there. He had not chosen to be — existence imposed itself upon him 
 
 const themes: Record<ReaderTheme, { bg: string; text: string; card: string; name: string }> = {
   dark: {
-    bg: 'hsl(240 15% 4%)',
-    text: 'hsl(45 20% 85%)',
-    card: 'hsl(240 14% 7%)',
+    bg: '#193A28',
+    text: '#FFFDF7',
+    card: '#23432E',
     name: 'dark',
   },
   light: {
-    bg: 'hsl(40 20% 95%)',
-    text: 'hsl(240 20% 15%)',
-    card: 'hsl(40 20% 98%)',
+    bg: '#F5F0E3',
+    text: '#263A2C',
+    card: '#FFFDF7',
     name: 'light',
   },
   golden: {
-    bg: 'hsl(35 30% 8%)',
-    text: 'hsl(45 60% 80%)',
-    card: 'hsl(35 25% 10%)',
+    bg: '#EDE5D4',
+    text: '#23432E',
+    card: '#FFFDF7',
     name: 'golden',
   },
 };
@@ -63,7 +63,7 @@ export function ReaderPage() {
   const [, params] = useRoute('/reader/:id');
   const book = getBookById(params?.id || 'b001');
 
-  const [theme, setTheme] = useState<ReaderTheme>('dark');
+  const [theme, setTheme] = useState<ReaderTheme>('light');
   const [fontSize, setFontSize] = useState(18);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [showTOC, setShowTOC] = useState(false);

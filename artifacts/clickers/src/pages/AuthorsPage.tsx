@@ -1,9 +1,8 @@
-﻿import { useRoute, Link } from 'wouter';
+import { useRoute, Link } from 'wouter';
 import { motion } from 'framer-motion';
-import { Star, BookOpen, Users, ArrowLeft, ArrowRight, Globe, Instagram, Twitter, ShieldCheck } from 'lucide-react';
+import { Star, BookOpen, ArrowLeft, ArrowRight, Globe, Instagram, Twitter, ShieldCheck } from 'lucide-react';
 import { AuthorCard } from '@/components/AuthorCard';
 import { BookCard } from '@/components/BookCard';
-import { SectionHeader } from '@/components/SectionHeader';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { useAuthors, useAuthor, useBooks, useAuthorRating, useRateAuthor } from '@/services/supabase.hooks';
 import { useState } from 'react';
@@ -12,30 +11,45 @@ import { useToast } from '@/hooks/use-toast';
 import { sanitizeHTML } from '@/lib/sanitize';
 
 export function AuthorsPage() {
-  const { t, isRTL } = useLanguage();
+  const { isRTL } = useLanguage();
   const { data: authors, isLoading } = useAuthors();
 
   return (
-    <div className="min-h-screen pt-24 pb-32 bg-transparent">
+    <div className="min-h-screen pt-28 pb-32 bg-[#F5F0E3] font-arabic text-[#263A2C]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <SectionHeader
-          title={t.authors.title}
-          subtitle={t.authors.subtitle}
-        />
+        
+        {/* Header */}
+        <div className="text-center max-w-2xl mx-auto mb-16">
+          <span className="text-xs font-bold text-[#B49A63] tracking-widest uppercase block mb-2">
+            {isRTL ? 'نخبة الأدب والفكر' : 'Literary Minds'}
+          </span>
+          <h1 className="text-3xl sm:text-5xl font-extrabold text-[#23432E] tracking-tight mb-4">
+            {isRTL ? 'مؤلفو دار الرحاب' : 'Authors of Dar Al-Rehab'}
+          </h1>
+          <p className="text-base text-[#777363] leading-relaxed">
+            {isRTL
+              ? 'نعتز بنخبة المبدعين والمفكرين الذين ائتمنوا دار الرحاب على نتاج أقلامهم ورؤاهم الأدبية.'
+              : 'Celebrating the visionary authors and thinkers who have entrusted their literary legacy to Dar Al-Rehab.'}
+          </p>
+        </div>
         
         {isLoading ? (
-           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-             {[1,2,3,4,5,6].map(i => <div key={i} className="h-60 bg-primary/5 animate-pulse rounded-[3rem]" />)}
-           </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[1, 2, 3, 4, 5, 6].map(i => (
+              <div key={i} className="h-48 bg-[#EDE5D4] animate-pulse rounded-3xl" />
+            ))}
+          </div>
         ) : authors && authors.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {authors.map((author, i) => (
               <AuthorCard key={author.id} author={author} index={i} />
             ))}
           </div>
         ) : (
-          <div className="py-24 text-center bg-primary/5 rounded-[3rem] border-2 border-dashed border-primary/10">
-            <p className="text-primary/30 font-bold uppercase tracking-wider">No scribes have been registered in the Great Archive yet.</p>
+          <div className="py-24 text-center bg-[#FFFDF7] rounded-3xl border border-[#D6C6A8] max-w-md mx-auto p-8">
+            <p className="text-[#777363] text-sm">
+              {isRTL ? 'لم يتم تسجيل مؤلفين بعد.' : 'No authors recorded yet.'}
+            </p>
           </div>
         )}
       </div>
@@ -59,22 +73,23 @@ export function AuthorDetail() {
 
   if (authorLoading) {
     return (
-      <div className="min-h-screen bg-transparent flex items-center justify-center pt-24">
-        <div className="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin" />
+      <div className="min-h-screen bg-[#F5F0E3] flex items-center justify-center pt-24">
+        <div className="w-12 h-12 border-4 border-[#D6C6A8] border-t-[#23432E] rounded-full animate-spin" />
       </div>
     );
   }
 
   if (!author) {
     return (
-      <div className="min-h-screen pt-32 flex flex-col items-center justify-center bg-transparent">
-        <h2 className="text-3xl font-black text-primary mb-4 font-cinematic uppercase tracking-wider">{t.common.notFound}</h2>
-        <Link href="/authors">
-          <button className="flex items-center gap-2 text-primary/40 font-bold uppercase tracking-wider text-xs hover:text-primary transition-all">
-             {isRTL ? <ArrowRight size={14} /> : <ArrowLeft size={14} />}
-             <span>{t.common.backToHome}</span>
-          </button>
-        </Link>
+      <div className="min-h-screen pt-32 flex flex-col items-center justify-center bg-[#F5F0E3] font-arabic">
+        <div className="text-center p-8 bg-[#FFFDF7] rounded-3xl border border-[#D6C6A8]">
+          <h2 className="text-2xl font-bold text-[#23432E] mb-4">{t.common.notFound}</h2>
+          <Link href="/authors">
+            <span className="text-[#B49A63] font-bold text-sm cursor-pointer hover:underline">
+              {isRTL ? 'العودة لقائمة المؤلفين' : 'Back to Authors'}
+            </span>
+          </Link>
+        </div>
       </div>
     );
   }
@@ -84,174 +99,151 @@ export function AuthorDetail() {
 
   const handleRate = async (value: number) => {
     if (!user?.id) {
-      toast({ title: 'Please login to rate experts', variant: 'destructive' });
+      toast({ title: isRTL ? 'يرجى تسجيل الدخول للتقييم' : 'Please login to rate', variant: 'destructive' });
       return;
     }
     try {
       await rateAuthor.mutateAsync({ authorId: author.id as string, rating: value, userId: user.id as string });
-      toast({ title: 'Thank you for your rating!' });
+      toast({ title: isRTL ? 'شكراً لتقييمك!' : 'Thank you for your rating!' });
     } catch (err) {
-      toast({ title: 'Error submitting rating', variant: 'destructive' });
+      toast({ title: isRTL ? 'تعذر حفظ التقييم' : 'Error submitting rating', variant: 'destructive' });
     }
   };
 
   return (
-    <div className="min-h-screen bg-transparent pb-32">
-      {/* Cinematic Profile Header */}
-      <div className="relative py-20 overflow-hidden bg-primary/5">
-        <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-[#FDFBF7]" />
-        
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <Link href="/authors">
-            <motion.button
-              className={`flex items-center gap-2 text-primary/40 font-black uppercase tracking-wider text-xs mb-12 hover:text-primary transition-all ${isRTL ? 'flex-row-reverse ml-auto' : ''}`}
-            >
-              {isRTL ? <ArrowRight size={14} /> : <ArrowLeft size={14} />}
-              <span>{t.authors.title}</span>
-            </motion.button>
-          </Link>
+    <div className="min-h-screen bg-[#F5F0E3] pt-28 pb-32 font-arabic text-[#263A2C]">
+      
+      {/* Profile Header */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
+        <Link href="/authors">
+          <motion.button
+            className={`inline-flex items-center gap-2 text-xs font-bold text-[#777363] hover:text-[#23432E] transition-colors mb-10 ${isRTL ? 'flex-row' : ''}`}
+            whileHover={{ x: isRTL ? 3 : -3 }}
+          >
+            {isRTL ? <ArrowRight size={14} className="text-[#B49A63]" /> : <ArrowLeft size={14} className="text-[#B49A63]" />}
+            <span>{isRTL ? 'العودة لقائمة المؤلفين' : 'Back to Authors'}</span>
+          </motion.button>
+        </Link>
 
-          <div className={`flex flex-col md:flex-row gap-12 items-center md:items-start ${isRTL ? 'md:flex-row-reverse text-right' : 'text-left'}`}>
-             {/* Portrait */}
-             <motion.div
-               initial={{ opacity: 0, scale: 0.9, rotate: -3 }}
-               animate={{ opacity: 1, scale: 1, rotate: 0 }}
-               className="relative"
-             >
-               <div className="w-48 h-48 md:w-64 md:h-64 rounded-[4rem] overflow-hidden border-8 border-white shadow-2xl relative z-10">
-                  <img src={author.photo_url ?? undefined} alt={name} className="w-full h-full object-cover" />
-               </div>
-               <div className="absolute -bottom-4 -right-4 w-20 h-20 bg-accent rounded-full flex items-center justify-center text-white shadow-xl z-20 border-4 border-white">
-                  <ShieldCheck size={32} />
-               </div>
-             </motion.div>
-
-             {/* Info */}
-             <div className="flex-1 space-y-6">
-               <motion.div
-                 initial={{ opacity: 0, y: 20 }}
-                 animate={{ opacity: 1, y: 0 }}
-               >
-                 <span className="text-accent font-black uppercase tracking-[0.3em] text-xs mb-4 block">Master Architect</span>
-                 <h1 className={`text-5xl md:text-7xl font-black text-primary mb-4 ${isRTL ? 'font-arabic' : 'font-cinematic'}`}>
-                   {name}
-                 </h1>
-                 <p className="text-primary/40 text-lg font-bold uppercase tracking-wider">{author.nationality || 'Independent Writer'}</p>
-               </motion.div>
-
-               <div className={`flex items-center gap-10 flex-wrap ${isRTL ? 'flex-row-reverse' : ''}`}>
-                  <div className="flex flex-col">
-                    <span className="text-xs font-black uppercase tracking-wider text-primary/20 mb-1">Works</span>
-                    <div className={`flex items-center gap-2 text-primary font-black text-2xl ${isRTL ? 'flex-row-reverse' : ''}`}>
-                       <BookOpen size={20} className="text-accent" />
-                       <span>{books?.length || 0}</span>
-                    </div>
+        <div className="bg-[#FFFDF7] rounded-[2.5rem] p-8 sm:p-12 border border-[#D6C6A8] shadow-sm">
+          <div className="flex flex-col md:flex-row gap-8 sm:gap-12 items-center md:items-start">
+            
+            {/* Portrait */}
+            <div className="relative flex-shrink-0">
+              <div className="w-44 h-44 sm:w-52 sm:h-52 rounded-full overflow-hidden border-4 border-[#B49A63] bg-[#EDE5D4] shadow-md p-1">
+                {author.photo_url ? (
+                  <img src={author.photo_url} alt={name} className="w-full h-full object-cover rounded-full" />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-4xl font-bold text-[#23432E]">
+                    {name[0] || 'أ'}
                   </div>
-                  <div className="flex flex-col">
-                    <span className="text-xs font-black uppercase tracking-wider text-primary/20 mb-1">Global Rating</span>
-                    <div className={`flex items-center gap-2 text-primary font-black text-2xl ${isRTL ? 'flex-row-reverse' : ''}`}>
-                       <Star size={20} fill="currentColor" className="text-yellow-400" />
-                       <span>{rating?.average?.toFixed(1) || '0.0'}</span>
-                       <span className="text-primary/20 text-xs ml-1 font-bold">({rating?.count || 0})</span>
-                    </div>
-                  </div>
-               </div>
+                )}
+              </div>
+            </div>
 
-               <div className={`flex items-center gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                  {author.instagram && (
-                    <a href={author.instagram} target="_blank" className="w-12 h-12 bg-card/70 backdrop-blur-xl border-card-border/50 shadow-2xl rounded-2xl flex items-center justify-center text-primary/40 hover:text-accent hover:shadow-xl transition-all border border-border">
-                      <Instagram size={20} />
-                    </a>
-                  )}
-                  {author.twitter && (
-                    <a href={author.twitter} target="_blank" className="w-12 h-12 bg-card/70 backdrop-blur-xl border-card-border/50 shadow-2xl rounded-2xl flex items-center justify-center text-primary/40 hover:text-accent hover:shadow-xl transition-all border border-border">
-                      <Twitter size={20} />
-                    </a>
-                  )}
-                  {author.website && (
-                    <a href={author.website} target="_blank" className="w-12 h-12 bg-card/70 backdrop-blur-xl border-card-border/50 shadow-2xl rounded-2xl flex items-center justify-center text-primary/40 hover:text-accent hover:shadow-xl transition-all border border-border">
-                      <Globe size={20} />
-                    </a>
-                  )}
-               </div>
-             </div>
+            {/* Info */}
+            <div className="flex-1 text-center md:text-right space-y-4">
+              <span className="text-xs font-bold text-[#B49A63] tracking-widest uppercase block">
+                {isRTL ? 'أديب ومفكر' : 'Author Profile'}
+              </span>
+
+              <h1 className="text-3xl sm:text-5xl font-extrabold text-[#23432E]">
+                {name}
+              </h1>
+
+              <p className="text-sm text-[#777363] font-bold">
+                {author.nationality || (isRTL ? 'مؤلف معتمد لدى دار الرحاب' : 'Author at Dar Al-Rehab')}
+              </p>
+
+              {/* Stats */}
+              <div className="flex items-center justify-center md:justify-start gap-8 pt-4 border-t border-[#D6C6A8]/50">
+                <div className="flex items-center gap-2">
+                  <BookOpen size={18} className="text-[#B49A63]" />
+                  <span className="font-bold text-sm text-[#23432E]">
+                    {books?.length || 0} {isRTL ? 'إصدارات' : 'Works'}
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Star size={18} className="fill-[#B49A63] text-[#B49A63]" />
+                  <span className="font-bold text-sm text-[#23432E]">
+                    {(rating?.average || 5).toFixed(1)} / 5
+                  </span>
+                </div>
+              </div>
+
+              {/* Social Icons */}
+              <div className="flex items-center justify-center md:justify-start gap-3 pt-2">
+                {author.instagram && (
+                  <a href={author.instagram} target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-[#EDE5D4] flex items-center justify-center text-[#23432E] hover:text-[#B49A63] transition-colors">
+                    <Instagram size={16} />
+                  </a>
+                )}
+                {author.twitter && (
+                  <a href={author.twitter} target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-[#EDE5D4] flex items-center justify-center text-[#23432E] hover:text-[#B49A63] transition-colors">
+                    <Twitter size={16} />
+                  </a>
+                )}
+                {author.website && (
+                  <a href={author.website} target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-[#EDE5D4] flex items-center justify-center text-[#23432E] hover:text-[#B49A63] transition-colors">
+                    <Globe size={16} />
+                  </a>
+                )}
+              </div>
+
+            </div>
+
           </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-20">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-20">
-           {/* Sidebar: Rating & Actions */}
-           <div className="lg:col-span-4 order-2 lg:order-1">
-              <div className="sticky top-24 space-y-8">
-                 <div className={`bg-card/70 backdrop-blur-xl border-card-border/50 shadow-2xl p-10 rounded-[3.5rem] border border-border shadow-2xl shadow-primary/5 ${isRTL ? 'text-right' : ''}`}>
-                    <h3 className="text-xs font-black text-primary uppercase tracking-wider mb-8">Writer's Legacy</h3>
-                    <p className="text-primary/60 text-sm mb-10 leading-relaxed">
-                       Support this architect by rating their contributions to the great archive. Your appreciation builds the realm.
-                    </p>
-                    
-                    <div className={`flex items-center justify-center gap-3 mb-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                       {[1,2,3,4,5].map(i => (
-                         <button
-                           key={i}
-                           onMouseEnter={() => setHoverRating(i)}
-                           onMouseLeave={() => setHoverRating(0)}
-                           onClick={() => handleRate(i)}
-                           className="transition-transform active:scale-95"
-                         >
-                           <Star 
-                             size={32} 
-                             fill={i <= (hoverRating || 0) ? 'currentColor' : 'none'}
-                             className={`${i <= (hoverRating || 0) ? 'text-yellow-400' : 'text-primary/10'}`} 
-                           />
-                         </button>
-                       ))}
-                    </div>
-                    <p className="text-center text-xs font-black text-primary/20 uppercase tracking-wider">Rate this expert</p>
-                 </div>
-              </div>
-           </div>
-
-           {/* Main Content: Bio & Works */}
-           <div className="lg:col-span-8 order-1 lg:order-2">
-              <section className="mb-24">
-                <h2 className={`text-2xl font-black text-primary mb-8 uppercase tracking-wider ${isRTL ? 'text-right font-arabic' : 'font-cinematic'}`}>
-                   {t.authors.biography}
-                </h2>
-                <div className={`text-xl text-primary/70 leading-[1.8] space-y-6 ${isRTL ? 'text-right font-arabic' : ''}`}>
-                   <p dangerouslySetInnerHTML={{ __html: sanitizeHTML(bio?.replace(/\n/g, '<br/>') ?? '') }} />
-                </div>
-              </section>
-
-              <section>
-                 <div className={`flex flex-col md:flex-row items-baseline justify-between mb-12 gap-4 ${isRTL ? 'md:flex-row-reverse text-right' : ''}`}>
-                    <h2 className={`text-4xl font-black text-primary ${isRTL ? 'font-arabic' : 'font-cinematic uppercase tracking-wider'}`}>
-                       Bibliography
-                    </h2>
-                    <span className="text-primary/20 font-black uppercase text-xs tracking-wider leading-none">The Complete Collection</span>
-                 </div>
-
-                 {booksLoading ? (
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
-                       {[1,2,3].map(i => <div key={i} className="aspect-[2/3] bg-primary/5 animate-pulse rounded-[2rem]" />)}
-                    </div>
-                 ) : books && books.length > 0 ? (
-                    <div className="grid grid-cols-2 lg:grid-cols-3 gap-8">
-                       {books.map((book, i) => (
-                         <BookCard key={book.id} book={book} index={i} />
-                       ))}
-                    </div>
-                 ) : (
-                    <div className="py-20 text-center bg-primary/5 rounded-[3rem] border-2 border-dashed border-primary/10">
-                       <p className="text-primary/30 font-bold uppercase tracking-wider">No works have been cataloged for this scribe yet.</p>
-                    </div>
-                 )}
-              </section>
-           </div>
+      {/* Main Content: Bio & Bibliography */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* Biography */}
+        <div className="bg-[#FFFDF7] rounded-3xl p-8 sm:p-10 border border-[#D6C6A8] shadow-sm mb-16">
+          <h2 className="text-xl font-bold text-[#23432E] mb-4 flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-[#B49A63]" />
+            <span>{isRTL ? 'السيرة الذاتية والمسيرة الأدبية' : 'Biography'}</span>
+          </h2>
+          <div 
+            className="text-base text-[#263A2C]/90 leading-relaxed font-arabic"
+            dangerouslySetInnerHTML={{ __html: sanitizeHTML(bio?.replace(/\n/g, '<br/>') || (isRTL ? 'من أبرز الأقلام الأدبية الصادرة عن دار الرحاب للنشر والتوزيع.' : 'Distinguished author.')) }}
+          />
         </div>
+
+        {/* Bibliography Section */}
+        <div>
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-2xl font-bold text-[#23432E]">
+              {isRTL ? 'مؤلفات الكاتب الصادرة عن دار الرحاب' : 'Published Works'}
+            </h2>
+            <span className="text-xs font-bold text-[#777363]">
+              {books?.length || 0} {isRTL ? 'إصداراً' : 'titles'}
+            </span>
+          </div>
+
+          {booksLoading ? (
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+              {[1, 2, 3, 4].map(i => (
+                <div key={i} className="aspect-[2/3] bg-[#EDE5D4] rounded-3xl animate-pulse" />
+              ))}
+            </div>
+          ) : books && books.length > 0 ? (
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8">
+              {books.map((book, i) => (
+                <BookCard key={book.id} book={book} index={i} />
+              ))}
+            </div>
+          ) : (
+            <div className="py-16 text-center bg-[#FFFDF7] rounded-3xl border border-[#D6C6A8] p-8">
+              <p className="text-sm text-[#777363]">
+                {isRTL ? 'لا توجد إصدارات مسجلة حالياً.' : 'No works registered yet.'}
+              </p>
+            </div>
+          )}
+        </div>
+
       </div>
     </div>
   );
 }
-
-

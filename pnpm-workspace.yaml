@@ -1,0 +1,4 @@
+packages:
+  - "artifacts/clickers"
+  - "artifacts/api-server"
+  - "lib/*"

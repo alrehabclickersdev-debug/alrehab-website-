@@ -44,7 +44,7 @@ export function AdminWorlds() {
     description_ar: '',
     description_en: '',
     banner_url: '',
-    color_primary: '#8B1D3D',
+    color_primary: '#23432E',
     is_featured: false,
   });
 
@@ -59,7 +59,7 @@ export function AdminWorlds() {
         description_ar: world.description_ar || '',
         description_en: world.description_en || '',
         banner_url: world.banner_url || '',
-        color_primary: world.color_primary || '#8B1D3D',
+        color_primary: world.color_primary || '#23432E',
         is_featured: world.is_featured || false,
       });
       // Find books currently assigned to this world
@@ -73,7 +73,7 @@ export function AdminWorlds() {
         description_ar: '',
         description_en: '',
         banner_url: '',
-        color_primary: '#8B1D3D',
+        color_primary: '#23432E',
         is_featured: false,
       });
       setSelectedBookIds([]);

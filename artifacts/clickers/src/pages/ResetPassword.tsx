@@ -1,4 +1,4 @@
-﻿import { useState } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useLocation } from 'wouter';
 import { Eye, EyeOff, ArrowRight } from 'lucide-react';
@@ -28,7 +28,7 @@ export function ResetPassword() {
 
     setIsLoading(true);
     const { error } = await updatePassword(password);
-    
+
     if (error) {
       setError(error);
     } else {
@@ -39,18 +39,28 @@ export function ResetPassword() {
   };
 
   return (
-    <div className="min-h-screen bg-transparent flex items-center justify-center px-4 py-32">
-      <div className="fixed -top-1/4 -right-1/4 w-[600px] h-[600px] bg-primary/5 blur-[120px] rounded-full pointer-events-none" />
-      
+    <div className="min-h-screen flex items-center justify-center px-4 py-32" style={{ background: '#F5F0E3' }}>
       <motion.div
         className="relative w-full max-w-md"
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
       >
-        <div className="bg-card/70 backdrop-blur-xl border-card-border/50 shadow-2xl rounded-[2.5rem] shadow-2xl shadow-primary/10 border border-border p-10">
-          <h2 className={`text-2xl font-black text-primary mb-8 ${isRTL ? 'text-right font-arabic' : 'font-cinematic uppercase tracking-wider'}`}>
-            {isRTL ? 'تعيين كلمة مرور جديدة' : 'Reset Your Password'}
-          </h2>
+        <div
+          className="rounded-[2.5rem] p-8 md:p-10"
+          style={{
+            background: '#FFFDF7',
+            border: '1px solid #D6C6A8',
+            boxShadow: '0 20px 60px rgba(35,67,46,0.06)'
+          }}
+        >
+          <div className="text-center mb-6">
+            <span className="font-bold uppercase tracking-[0.2em] text-xs font-arabic" style={{ color: '#B49A63' }}>
+              {isRTL ? 'أمان الحساب' : 'Security'}
+            </span>
+            <h2 className="text-2xl font-black mt-1 font-arabic" style={{ color: '#23432E' }}>
+              {isRTL ? 'تعيين كلمة مرور جديدة' : 'Reset Your Password'}
+            </h2>
+          </div>
 
           {success ? (
             <motion.div
@@ -58,22 +68,25 @@ export function ResetPassword() {
               animate={{ opacity: 1, y: 0 }}
               className="text-center space-y-4"
             >
-              <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
+              <div
+                className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
+                style={{ background: 'rgba(35,67,46,0.1)', color: '#23432E' }}
+              >
                 <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <p className={`text-lg font-bold text-primary ${isRTL ? 'font-arabic' : ''}`}>
+              <p className="text-lg font-bold font-arabic" style={{ color: '#23432E' }}>
                 {isRTL ? 'تم تغيير كلمة المرور بنجاح' : 'Password changed successfully!'}
               </p>
-              <p className="text-sm text-primary/60">
-                {isRTL ? 'سيتم توجيهك إلى صفحة الدخول...' : 'Redirecting you to login...'}
+              <p className="text-sm font-arabic" style={{ color: '#777363' }}>
+                {isRTL ? 'سيتم تحويلك إلى صفحة الدخول تلقائياً...' : 'Redirecting to sign in...'}
               </p>
             </motion.div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-6" dir={isRTL ? 'rtl' : 'ltr'}>
+            <form onSubmit={handleSubmit} className="space-y-5" dir={isRTL ? 'rtl' : 'ltr'}>
               <div>
-                <label className="block text-xs font-black uppercase tracking-wider text-primary/40 mb-2">
+                <label className="block text-xs font-bold font-arabic mb-2" style={{ color: '#263A2C' }}>
                   {isRTL ? 'كلمة المرور الجديدة' : 'New Password'}
                 </label>
                 <div className="relative">
@@ -84,12 +97,19 @@ export function ResetPassword() {
                     placeholder="••••••••"
                     required
                     minLength={6}
-                    className="w-full px-5 py-4 bg-transparent border border-border rounded-2xl font-bold text-primary placeholder:text-primary/20 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all pr-14"
+                    dir="ltr"
+                    className="w-full px-4 py-3 rounded-xl font-bold text-sm transition-all focus:outline-none pr-12 text-left"
+                    style={{
+                      background: '#F5F0E3',
+                      border: '1px solid #D6C6A8',
+                      color: '#263A2C'
+                    }}
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute top-1/2 -translate-y-1/2 right-4 text-primary/30 hover:text-primary transition-colors"
+                    className="absolute top-1/2 -translate-y-1/2 right-4 transition-colors"
+                    style={{ color: '#777363' }}
                   >
                     {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                   </button>
@@ -97,7 +117,7 @@ export function ResetPassword() {
               </div>
 
               <div>
-                <label className="block text-xs font-black uppercase tracking-wider text-primary/40 mb-2">
+                <label className="block text-xs font-bold font-arabic mb-2" style={{ color: '#263A2C' }}>
                   {isRTL ? 'تأكيد كلمة المرور' : 'Confirm Password'}
                 </label>
                 <input
@@ -106,12 +126,18 @@ export function ResetPassword() {
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="••••••••"
                   required
-                  className="w-full px-5 py-4 bg-transparent border border-border rounded-2xl font-bold text-primary placeholder:text-primary/20 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all"
+                  dir="ltr"
+                  className="w-full px-4 py-3 rounded-xl font-bold text-sm transition-all focus:outline-none text-left"
+                  style={{
+                    background: '#F5F0E3',
+                    border: '1px solid #D6C6A8',
+                    color: '#263A2C'
+                  }}
                 />
               </div>
 
               {error && (
-                <p className={`text-red-500 text-sm font-bold bg-red-50 px-4 py-3 rounded-xl border border-red-100 ${isRTL ? 'text-right font-arabic' : ''}`}>
+                <p className="text-sm font-bold p-3 rounded-xl font-arabic bg-red-50 text-red-600 border border-red-200">
                   {error}
                 </p>
               )}
@@ -119,14 +145,18 @@ export function ResetPassword() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full py-5 bg-primary text-white font-black rounded-2xl shadow-xl shadow-primary/20 hover:bg-accent hover:text-primary transition-all disabled:opacity-50 flex items-center justify-center gap-3 text-sm uppercase tracking-wider"
+                className="w-full py-4 rounded-full font-bold font-arabic text-sm shadow-md transition-all flex items-center justify-center gap-2"
+                style={{
+                  background: '#23432E',
+                  color: '#FFFDF7'
+                }}
               >
                 {isLoading ? (
                   <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                 ) : (
                   <>
-                    <span>{isRTL ? 'حفظ كلمة المرور' : 'Save New Password'}</span>
-                    <ArrowRight size={18} className={isRTL ? 'rotate-180' : ''} />
+                    <span>{isRTL ? 'حفظ كلمة المرور الجديدة' : 'Save New Password'}</span>
+                    <ArrowRight size={16} className={isRTL ? 'rotate-180' : ''} />
                   </>
                 )}
               </button>
@@ -137,4 +167,3 @@ export function ResetPassword() {
     </div>
   );
 }
-

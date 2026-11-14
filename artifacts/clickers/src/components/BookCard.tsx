@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Link } from 'wouter';
-import { Star, Eye } from 'lucide-react';
+import { Star, Eye, BookOpen } from 'lucide-react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { supabase } from '@/lib/supabase';
@@ -15,8 +15,7 @@ export function BookCard({ book, variant = 'default', index = 0 }: BookCardProps
   const { t, isRTL, language } = useLanguage();
   const queryClient = useQueryClient();
 
-  // Prefetch book detail on hover — loads data silently before click
-  // By the time the user clicks, the detail page renders instantly from cache
+  // Prefetch book detail on hover
   const handlePrefetch = () => {
     queryClient.prefetchQuery({
       queryKey: ['book', book.id],
@@ -28,13 +27,12 @@ export function BookCard({ book, variant = 'default', index = 0 }: BookCardProps
           .single();
         return data;
       },
-      staleTime: 5 * 60 * 1000, // Don't re-prefetch within 5 minutes
+      staleTime: 5 * 60 * 1000,
     });
   };
 
   const title = language === 'ar' ? (book.title_ar || book.titleAr) : (book.title_en || book.titleEn);
   
-  // Handle nested author or flat author name depending on the join
   const authorData = Array.isArray(book.authors) ? book.authors[0] : book.authors;
   let authorName = authorData ? (language === 'ar' ? authorData.name_ar : authorData.name_en) : null;
   if (!authorName) {
@@ -47,77 +45,78 @@ export function BookCard({ book, variant = 'default', index = 0 }: BookCardProps
 
   return (
     <motion.div
-      className="group relative cinematic-glow"
+      className="group relative bg-[#FFFDF7] border border-[#D6C6A8] rounded-3xl p-3 shadow-[0_8px_24px_-8px_rgba(35,67,46,0.08)] hover:shadow-[0_16px_36px_-10px_rgba(35,67,46,0.14)] hover:border-[#B49A63] transition-all duration-300"
       data-testid={`card-book-${book.id}`}
       onMouseEnter={handlePrefetch}
+      whileHover={{ y: -4 }}
     >
       <Link href={`/book/${book.id}`}>
-        <div className="cursor-pointer transition-transform duration-500 hover:scale-[1.02]">
+        <div className="cursor-pointer">
           {/* Cover Image Container */}
-          <div className={`relative overflow-hidden rounded-[1.5rem] bg-card/30 transition-all duration-500 hover:shadow-[0_22px_45px_-12px_rgba(139,29,61,0.25)] hover:-translate-y-2 mb-4 group-hover:ring-1 group-hover:ring-accent/20 ${
+          <div className={`relative overflow-hidden rounded-2xl bg-[#EDE5D4] mb-3.5 shadow-md group-hover:shadow-lg transition-all ${
             variant === 'compact' ? 'aspect-[2/3] h-48' : 'aspect-[2/3]'
           }`}>
-            <img
-              src={book.cover_url || book.coverUrl || ''}
-              alt={title}
-              className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-              loading="lazy"
-            />
-            
-            {/* Glossy Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-primary/10 via-transparent to-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            {book.cover_url || book.coverUrl ? (
+              <img
+                src={book.cover_url || book.coverUrl}
+                alt={title}
+                className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                loading="lazy"
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center bg-[#EDE5D4] text-[#B49A63]">
+                <BookOpen size={36} />
+              </div>
+            )}
             
             {/* Price Tag Floating */}
-            <div className={`absolute bottom-3 ${isRTL ? 'left-3' : 'right-3'}`}>
-              <div className="bg-primary/90 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/10 shadow-lg">
-                <span className="text-primary-foreground font-bold text-sm">
-                  {book.price} <span className="text-xs opacity-70">{t.common.currency}</span>
+            <div className={`absolute bottom-2.5 ${isRTL ? 'left-2.5' : 'right-2.5'}`}>
+              <div className="bg-[#23432E]/95 backdrop-blur-md px-3 py-1 rounded-full border border-[#B49A63]/60 shadow-md">
+                <span className="text-[#FFFDF7] font-bold text-xs font-arabic">
+                  {book.price} <span className="text-[10px] text-[#B49A63]">{t.common.currency}</span>
                 </span>
               </div>
             </div>
 
             {/* Badges */}
-            <div className={`absolute top-3 ${isRTL ? 'right-3' : 'left-3'} flex flex-col gap-1.5`}>
+            <div className={`absolute top-2.5 ${isRTL ? 'right-2.5' : 'left-2.5'} flex flex-col gap-1.5`}>
               {(book.is_new || book.isNew) && (
-                <span className="px-2.5 py-1 bg-accent/90 backdrop-blur-sm text-primary text-xs font-bold rounded-lg shadow-sm">
+                <span className="px-2.5 py-0.5 bg-[#B49A63] text-[#193A28] text-[10px] font-black rounded-full shadow-sm font-arabic">
                   {isRTL ? 'جديد' : 'NEW'}
                 </span>
               )}
               {discount && (
-                <span className="px-2.5 py-1 bg-card/70 backdrop-blur-xl border-card-border/50 shadow-2xl/90 backdrop-blur-sm text-red-600 text-xs font-bold rounded-lg shadow-sm">
+                <span className="px-2 py-0.5 bg-[#A33B32] text-[#FFFDF7] text-[10px] font-bold rounded-full shadow-sm">
                   -{discount}%
                 </span>
               )}
             </div>
 
-            {/* Hover View Detail */}
-            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300">
-               <div className="w-12 h-12 bg-accent text-primary rounded-full flex items-center justify-center shadow-xl scale-90 group-hover:scale-100 transition-transform duration-300">
-                 <Eye size={20} />
+            {/* Hover View Detail Icon */}
+            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 bg-[#23432E]/20 backdrop-blur-[2px]">
+               <div className="w-11 h-11 bg-[#B49A63] text-[#193A28] rounded-full flex items-center justify-center shadow-lg scale-90 group-hover:scale-100 transition-transform duration-300">
+                 <Eye size={18} />
                </div>
             </div>
           </div>
 
           {/* Info Area */}
-          <div className={`${isRTL ? 'text-right' : 'text-left'} px-1`}>
-            <p className={`text-accent font-bold uppercase tracking-[0.1em] text-xs mb-1.5 ${isRTL ? 'font-arabic' : 'font-cinematic'}`}>
-              {authorName}
+          <div className={`${isRTL ? 'text-right' : 'text-left'} px-1 pb-1 font-arabic`}>
+            <p className="text-[#B49A63] font-bold text-xs mb-1 line-clamp-1">
+              {authorName || (isRTL ? 'دار الرحاب' : 'Dar Al-Rehab')}
             </p>
-            <h3 className={`font-bold text-primary leading-snug line-clamp-1 mb-2 group-hover:text-accent transition-colors ${
-              isRTL ? 'font-arabic text-md' : 'text-md group-hover:tracking-wide'
-            }`}>
+            <h3 className="font-extrabold text-[#23432E] text-sm leading-snug line-clamp-1 mb-2 group-hover:text-[#B49A63] transition-colors">
               {title}
             </h3>
             
-            {/* Rating & Footer */}
-            <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
+            {/* Rating & Format Footer */}
+            <div className={`flex items-center justify-between text-xs pt-2 border-t border-[#D6C6A8]/40 ${isRTL ? 'flex-row' : ''}`}>
                <div className="flex items-center gap-1">
-                 <Star size={12} className="fill-accent text-accent" />
-                 <span className="text-[11px] font-bold text-primary/80">{book.rating}</span>
+                 <Star size={12} className="fill-[#B49A63] text-[#B49A63]" />
+                 <span className="font-bold text-[#23432E] text-[11px]">{book.rating || '5.0'}</span>
                </div>
-               <div className="h-3 w-px bg-border" />
-               <span className="text-xs uppercase font-bold text-primary/40 tracking-wider">
-                 {book.format || 'Hardcover'}
+               <span className="text-[11px] font-semibold text-[#777363]">
+                 {book.genre_ar || book.genre || 'أدب'}
                </span>
             </div>
           </div>

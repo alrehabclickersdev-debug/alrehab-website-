@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'wouter';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShoppingCart, Menu, X, LogOut, LayoutDashboard } from 'lucide-react';
+import { ShoppingCart, Menu, X, LogOut, LayoutDashboard, Compass, ChevronDown, User } from 'lucide-react';
 import { useLanguage } from '@/i18n/LanguageContext';
 import { useAuth } from '@/contexts/useAuth';
 import { useCart } from '@/contexts/CartContext';
@@ -9,29 +9,21 @@ import { useCart } from '@/contexts/CartContext';
 // ── NAV LINK CONFIG ──────────────────────────────────────────────
 const NAV_LINKS_AR = [
   { href: '/', label: 'الرئيسية' },
-  { href: '/about', label: 'من نحن' },
-  { href: '/store', label: 'الإصدارات' },
+  { href: '/store', label: 'إصداراتنا' },
+  { href: '/about', label: 'عن دار الرحاب' },
   { href: '/authors', label: 'المؤلفون' },
-  { href: '/auth', label: 'انشر كتابك معنا' },
-  { href: '/blog', label: 'الأخبار والفعاليات' },
-  { href: '/worlds', label: 'المعارض' },
-  { href: '/store', label: 'تواصل معنا' },
+  { href: '/blog', label: 'الأخبار والمقالات' },
+  { href: '/about#contact', label: 'تواصل معنا' },
 ];
 
 const NAV_LINKS_EN = [
   { href: '/', label: 'Home' },
+  { href: '/store', label: 'Publications' },
   { href: '/about', label: 'About Us' },
-  { href: '/store', label: 'Releases' },
   { href: '/authors', label: 'Authors' },
-  { href: '/auth', label: 'Publish With Us' },
-  { href: '/blog', label: 'News & Events' },
-  { href: '/worlds', label: 'Exhibitions' },
-  { href: '/store', label: 'Contact Us' },
+  { href: '/blog', label: 'News & Articles' },
+  { href: '/about#contact', label: 'Contact' },
 ];
-
-const GOLD = '#c8a84b';
-const GOLD_DIM = 'rgba(200,168,75,0.7)';
-const DARK_BG = 'rgba(10,5,2,0.82)';
 
 export function Navbar() {
   const { isRTL, toggleLanguage } = useLanguage();
@@ -45,7 +37,7 @@ export function Navbar() {
   const navLinks = isRTL ? NAV_LINKS_AR : NAV_LINKS_EN;
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 20);
+    const handleScroll = () => setIsScrolled(window.scrollY > 15);
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -59,73 +51,76 @@ export function Navbar() {
   return (
     <>
       <motion.nav
-        className="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
+        className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
         style={{
-          background: isScrolled ? DARK_BG : 'rgba(10,5,2,0.6)',
-          backdropFilter: 'blur(12px)',
-          borderBottom: isScrolled ? '1px solid rgba(200,168,75,0.12)' : 'none',
+          backgroundColor: isScrolled ? 'rgba(245, 240, 227, 0.94)' : 'rgba(245, 240, 227, 0.88)',
+          backdropFilter: 'blur(16px)',
+          borderBottom: isScrolled ? '1px solid rgba(214, 198, 168, 0.8)' : '1px solid rgba(214, 198, 168, 0.35)',
+          boxShadow: isScrolled ? '0 4px 20px -2px rgba(35, 67, 46, 0.05)' : 'none',
         }}
-        initial={{ y: -80, opacity: 0 }}
+        initial={{ y: -70, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         dir={isRTL ? 'rtl' : 'ltr'}
       >
-        <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-10">
-          <div className="flex items-center h-14 md:h-16 gap-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-20 gap-4">
 
-            {/* ── Logo ── */}
+            {/* ── Brand Logo ── */}
             <Link href="/">
               <motion.div
-                className={`flex items-center gap-2.5 cursor-pointer flex-shrink-0 ${isRTL ? 'flex-row-reverse' : ''}`}
+                className={`flex items-center gap-3 cursor-pointer flex-shrink-0 ${isRTL ? 'flex-row' : ''}`}
                 whileHover={{ scale: 1.02 }}
                 data-testid="nav-logo"
               >
-                {/* Door icon */}
+                {/* Emblem */}
                 <div
-                  className="w-9 h-9 rounded-lg flex items-center justify-center text-base font-bold flex-shrink-0"
-                  style={{ background: 'rgba(200,168,75,0.15)', border: '1px solid rgba(200,168,75,0.3)', color: GOLD }}
+                  className="w-11 h-11 rounded-2xl flex items-center justify-center shadow-sm flex-shrink-0"
+                  style={{
+                    background: 'linear-gradient(135deg, #23432E 0%, #193A28 100%)',
+                    border: '1px solid #B49A63',
+                    color: '#B49A63',
+                  }}
                 >
-                  🚪
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z" />
+                    <path d="M6 6h10" />
+                    <path d="M6 10h10" />
+                    <path d="M6 14h6" />
+                  </svg>
                 </div>
-                {/* Text */}
+
+                {/* Typography */}
                 <div className={`flex flex-col leading-none ${isRTL ? 'text-right' : 'text-left'}`}>
-                  <span
-                    className="font-arabic font-black text-base md:text-lg leading-tight"
-                    style={{ color: '#f0e0c0' }}
-                  >
-                    ممر الكتب
+                  <span className="font-arabic font-extrabold text-xl md:text-2xl text-[#23432E] tracking-tight">
+                    دار الرحاب
                   </span>
-                  <span
-                    className="font-arabic text-[10px] tracking-wider mt-0.5"
-                    style={{ color: GOLD_DIM }}
-                  >
-                    دار نشر
+                  <span className="font-arabic text-[11px] font-bold text-[#B49A63] tracking-widest mt-1">
+                    {isRTL ? 'للنشر والتوزيع' : 'Publishing & Distribution'}
                   </span>
                 </div>
               </motion.div>
             </Link>
 
-            {/* ── Desktop Nav Links (center) ── */}
-            <div className="hidden lg:flex items-center gap-0 flex-1 justify-center">
+            {/* ── Centered Desktop Navigation Links ── */}
+            <div className="hidden lg:flex items-center gap-1 xl:gap-2 justify-center">
               {navLinks.map((link) => {
-                const isActive = location === link.href && link.href === '/';
+                const isActive = location === link.href || (link.href !== '/' && location.startsWith(link.href));
                 return (
                   <Link key={link.label} href={link.href}>
                     <motion.span
-                      className={`relative px-3 py-1.5 text-[12.5px] font-medium cursor-pointer transition-colors duration-200 font-arabic whitespace-nowrap ${
-                        isActive ? 'font-bold' : ''
+                      className={`relative px-4 py-2 text-sm font-semibold cursor-pointer transition-colors duration-200 font-arabic whitespace-nowrap ${
+                        isActive ? 'text-[#23432E] font-bold' : 'text-[#777363] hover:text-[#23432E]'
                       }`}
-                      style={{ color: isActive ? '#f0e0c0' : GOLD_DIM }}
-                      whileHover={{ color: '#f0e0c0' }}
                       data-testid={`nav-link-${link.label}`}
                     >
                       {link.label}
-                      {/* Active underline */}
+                      {/* Active delicate antique-gold underline */}
                       {isActive && (
                         <motion.div
                           layoutId="nav-active-indicator"
-                          className="absolute bottom-0 left-2 right-2 h-px rounded-full"
-                          style={{ background: GOLD }}
+                          className="absolute -bottom-1 left-3 right-3 h-[2px] rounded-full"
+                          style={{ backgroundColor: '#B49A63' }}
                         />
                       )}
                     </motion.span>
@@ -134,241 +129,174 @@ export function Navbar() {
               })}
             </div>
 
-            {/* ── Right actions ── */}
-            <div className={`flex items-center gap-2 flex-shrink-0 ${isRTL ? 'mr-auto' : 'ml-auto'}`}>
+            {/* ── Left Controls (Actions) ── */}
+            <div className={`flex items-center gap-3 flex-shrink-0 ${isRTL ? 'mr-0' : 'ml-0'}`}>
 
-              {/* Cart icon */}
+              {/* Browse CTA Button */}
+              <Link href="/store">
+                <motion.span
+                  className="hidden md:inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-bold cursor-pointer font-arabic shadow-sm"
+                  style={{
+                    backgroundColor: '#23432E',
+                    color: '#FFFDF7',
+                  }}
+                  whileHover={{ backgroundColor: '#193A28', y: -1, scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <Compass size={14} className="text-[#B49A63]" />
+                  <span>{isRTL ? 'تصفح الكتب' : 'Explore Books'}</span>
+                </motion.span>
+              </Link>
+
+              {/* Shopping Cart Button */}
               <motion.button
-                className="relative w-9 h-9 flex items-center justify-center rounded-lg transition-all"
-                style={{ color: GOLD_DIM }}
-                whileHover={{ color: '#f0e0c0', scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
+                className="relative w-10 h-10 flex items-center justify-center rounded-full transition-all border border-[#D6C6A8] hover:border-[#B49A63] bg-[#FFFDF7] text-[#263A2C]"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={toggleCart}
                 data-testid="cart-button"
+                aria-label="Shopping Cart"
               >
                 <ShoppingCart size={18} />
                 {totalItems > 0 && (
                   <motion.span
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
-                    className="absolute -top-1 -right-1 w-4 h-4 text-[10px] font-black rounded-full flex items-center justify-center"
-                    style={{ background: GOLD, color: '#1a0f05' }}
+                    className="absolute -top-1 -right-1 w-5 h-5 text-[10px] font-black rounded-full flex items-center justify-center text-[#193A28] shadow-sm"
+                    style={{ backgroundColor: '#B49A63' }}
                   >
                     {totalItems > 9 ? '9+' : totalItems}
                   </motion.span>
                 )}
               </motion.button>
 
-              {/* Language toggle */}
-              <motion.button
+              {/* Language Switcher */}
+              <button
                 onClick={toggleLanguage}
-                className="hidden md:flex text-[11px] font-bold px-2.5 py-1 rounded-lg transition-all"
-                style={{ color: GOLD_DIM, border: '1px solid rgba(200,168,75,0.2)' }}
-                whileHover={{ color: GOLD, borderColor: 'rgba(200,168,75,0.5)' }}
+                className="hidden sm:flex text-xs font-bold px-3 py-1.5 rounded-full border border-[#D6C6A8] text-[#777363] hover:text-[#23432E] hover:border-[#B49A63] bg-[#FFFDF7] transition-all"
               >
                 {isRTL ? 'EN' : 'عربي'}
-              </motion.button>
+              </button>
 
-              {/* User menu or auth */}
+              {/* User Authentication Menu */}
               {profile ? (
-                <div className="flex items-center gap-2">
-                  {isAdmin && (
-                    <Link href="/admin">
-                      <motion.span
-                        className="hidden md:inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-black cursor-pointer font-arabic"
-                        style={{ background: 'rgba(200,168,75,0.18)', border: '1px solid rgba(200,168,75,0.4)', color: GOLD }}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.96 }}
-                      >
-                        <LayoutDashboard size={14} />
-                        {isRTL ? 'لوحة التحكم' : 'Admin'}
-                      </motion.span>
-                    </Link>
-                  )}
-                  <div className="relative" onClick={(e) => e.stopPropagation()}>
-                    <motion.button
-                      className="flex items-center gap-2 px-3 py-1.5 rounded-lg transition-all"
-                      style={{ border: '1px solid rgba(200,168,75,0.25)', color: '#f0e0c0' }}
-                      onClick={() => setShowUserMenu(!showUserMenu)}
-                      whileTap={{ scale: 0.96 }}
-                    >
-                      <div
-                        className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-black"
-                        style={{ background: GOLD, color: '#1a0f05' }}
-                      >
-                        {profile.email[0].toUpperCase()}
-                      </div>
-                      <span className="hidden md:block text-xs font-bold max-w-[80px] truncate font-arabic">
-                        {profile.full_name || profile.email.split('@')[0]}
-                      </span>
-                    </motion.button>
+                <div className="relative">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setShowUserMenu(!showUserMenu);
+                    }}
+                    className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#D6C6A8] bg-[#FFFDF7] text-[#263A2C] text-xs font-bold hover:border-[#B49A63] transition-all"
+                  >
+                    <User size={14} className="text-[#B49A63]" />
+                    <span className="max-w-[80px] truncate">{profile.full_name || 'حسابي'}</span>
+                    <ChevronDown size={12} className="text-[#777363]" />
+                  </button>
 
-                    <AnimatePresence>
-                      {showUserMenu && (
-                        <motion.div
-                          className={`absolute top-full mt-2 ${isRTL ? 'left-0' : 'right-0'} w-48 rounded-xl overflow-hidden z-50 shadow-2xl`}
-                          style={{ background: 'rgba(20,10,3,0.97)', border: '1px solid rgba(200,168,75,0.2)' }}
-                          initial={{ opacity: 0, y: -8, scale: 0.95 }}
-                          animate={{ opacity: 1, y: 0, scale: 1 }}
-                          exit={{ opacity: 0, y: -8, scale: 0.95 }}
-                          transition={{ duration: 0.15 }}
+                  <AnimatePresence>
+                    {showUserMenu && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 8, scale: 0.96 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 8, scale: 0.96 }}
+                        className="absolute left-0 mt-2 w-48 rounded-2xl bg-[#FFFDF7] border border-[#D6C6A8] shadow-xl p-2 z-50 text-right font-arabic"
+                      >
+                        {isAdmin && (
+                          <Link href="/admin">
+                            <span className="flex items-center justify-between px-3 py-2 text-xs font-bold text-[#23432E] hover:bg-[#EDE5D4] rounded-xl cursor-pointer">
+                              <span>لوحة التحكم</span>
+                              <LayoutDashboard size={14} className="text-[#B49A63]" />
+                            </span>
+                          </Link>
+                        )}
+                        <Link href="/my-orders">
+                          <span className="block px-3 py-2 text-xs text-[#263A2C] hover:bg-[#EDE5D4] rounded-xl cursor-pointer">
+                            طلباتي
+                          </span>
+                        </Link>
+                        <hr className="my-1 border-[#D6C6A8]/50" />
+                        <button
+                          onClick={() => signOut()}
+                          className="w-full flex items-center justify-between px-3 py-2 text-xs font-bold text-red-700 hover:bg-red-50 rounded-xl"
                         >
-                          <div className="px-4 py-3" style={{ borderBottom: '1px solid rgba(200,168,75,0.1)' }}>
-                            <p className="font-bold text-sm truncate font-arabic" style={{ color: '#f0e0c0' }}>{profile.full_name || 'قارئ'}</p>
-                            <p className="text-xs truncate" style={{ color: GOLD_DIM }}>{profile.email}</p>
-                          </div>
-                          <div className="p-2">
-                            <Link href="/my-orders">
-                              <div className="flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer transition-all font-arabic text-sm"
-                                style={{ color: GOLD_DIM }}
-                                onClick={() => setShowUserMenu(false)}>
-                                <ShoppingCart size={14} />
-                                {isRTL ? 'طلباتي' : 'My Orders'}
-                              </div>
-                            </Link>
-                            {isAdmin && (
-                              <Link href="/admin">
-                                <div className="flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer transition-all font-arabic text-sm"
-                                  style={{ color: GOLD_DIM }}
-                                  onClick={() => setShowUserMenu(false)}>
-                                  <LayoutDashboard size={14} />
-                                  {isRTL ? 'لوحة التحكم' : 'Admin'}
-                                </div>
-                              </Link>
-                            )}
-                            <button
-                              onClick={() => { signOut(); setShowUserMenu(false); }}
-                              className="w-full flex items-center gap-2 px-3 py-2 rounded-lg transition-all font-arabic text-sm text-red-400 hover:bg-red-900/20"
-                            >
-                              <LogOut size={14} />
-                              {isRTL ? 'خروج' : 'Sign Out'}
-                            </button>
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
+                          <span>تسجيل الخروج</span>
+                          <LogOut size={14} />
+                        </button>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
               ) : (
                 <Link href="/auth">
-                  <motion.span
-                    className="hidden sm:inline-flex items-center px-4 py-1.5 rounded-lg text-xs font-bold cursor-pointer font-arabic"
-                    style={{ border: '1px solid rgba(200,168,75,0.3)', color: GOLD }}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.96 }}
-                  >
+                  <span className="hidden sm:inline-flex px-4 py-2 text-xs font-bold text-[#23432E] hover:text-[#B49A63] cursor-pointer font-arabic transition-colors">
                     {isRTL ? 'تسجيل الدخول' : 'Sign In'}
-                  </motion.span>
+                  </span>
                 </Link>
               )}
 
-              {/* Gold CTA: "تصفح الكتب" */}
-              <Link href="/store">
-                <motion.span
-                  className="hidden sm:inline-flex items-center px-5 py-2 rounded-lg text-sm font-black cursor-pointer font-arabic"
-                  style={{ background: GOLD, color: '#1a0f05' }}
-                  whileHover={{ scale: 1.05, y: -1 }}
-                  whileTap={{ scale: 0.96 }}
-                  data-testid="nav-cta"
-                >
-                  تصفح الكتب
-                </motion.span>
-              </Link>
-
-              {/* Mobile hamburger */}
-              <motion.button
-                className="lg:hidden w-9 h-9 flex items-center justify-center rounded-lg"
-                style={{ border: '1px solid rgba(200,168,75,0.25)', color: GOLD }}
+              {/* Mobile Menu Toggle */}
+              <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                whileTap={{ scale: 0.95 }}
-                data-testid="mobile-menu-button"
+                className="lg:hidden p-2 rounded-xl text-[#23432E] hover:bg-[#EDE5D4] transition-colors"
+                aria-label="Toggle Menu"
               >
-                {isMobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
-              </motion.button>
+                {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              </button>
+
             </div>
+
           </div>
         </div>
-      </motion.nav>
 
-      {/* ── Mobile Menu ── */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div
-            className="fixed inset-0 z-40 lg:hidden"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            <div
-              className="absolute inset-0"
-              style={{ background: 'rgba(10,5,2,0.95)', backdropFilter: 'blur(16px)' }}
-              onClick={() => setIsMobileMenuOpen(false)}
-            />
+        {/* ── Mobile Menu Dropdown ── */}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
             <motion.div
-              className="fixed bottom-0 left-0 right-0 rounded-t-3xl p-6 pb-10 z-50 max-h-[80vh] overflow-y-auto"
-              style={{ background: 'rgba(18,9,3,0.99)', border: '1px solid rgba(200,168,75,0.15)', borderBottom: 'none' }}
-              initial={{ y: '100%' }}
-              animate={{ y: 0 }}
-              exit={{ y: '100%' }}
-              transition={{ type: 'spring', damping: 28, stiffness: 220 }}
-              dir={isRTL ? 'rtl' : 'ltr'}
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="lg:hidden bg-[#FFFDF7] border-b border-[#D6C6A8] px-6 py-6 shadow-xl font-arabic"
             >
-              <div className="w-10 h-1 rounded-full mx-auto mb-6" style={{ background: 'rgba(200,168,75,0.3)' }} />
-              <div className="flex flex-col gap-1">
-                {navLinks.map((link, i) => (
-                  <motion.div
-                    key={link.label}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: i * 0.04 }}
-                  >
-                    <Link href={link.href}>
-                      <span
-                        className="block w-full text-center px-4 py-3 rounded-xl text-base font-bold cursor-pointer font-arabic transition-all"
-                        style={{ color: location === link.href ? GOLD : GOLD_DIM }}
-                        onClick={() => setIsMobileMenuOpen(false)}
-                      >
-                        {link.label}
-                      </span>
-                    </Link>
-                  </motion.div>
-                ))}
-                <div className="mt-6 pt-4 flex flex-col gap-3" style={{ borderTop: '1px solid rgba(200,168,75,0.1)' }}>
-                  <Link href="/store">
+              <div className="flex flex-col gap-3">
+                {navLinks.map((link) => (
+                  <Link key={link.label} href={link.href}>
                     <span
-                      className="block w-full text-center py-3 rounded-xl text-base font-black cursor-pointer font-arabic"
-                      style={{ background: GOLD, color: '#1a0f05' }}
                       onClick={() => setIsMobileMenuOpen(false)}
+                      className={`block py-2.5 text-base font-semibold border-b border-[#D6C6A8]/40 ${
+                        location === link.href ? 'text-[#23432E] font-bold' : 'text-[#777363]'
+                      }`}
                     >
-                      تصفح الكتب
+                      {link.label}
                     </span>
                   </Link>
-                  {profile ? (
-                    <button
-                      onClick={() => { signOut(); setIsMobileMenuOpen(false); }}
-                      className="w-full flex items-center justify-center gap-2 py-3 rounded-xl font-bold font-arabic text-red-400"
-                      style={{ border: '1px solid rgba(200,50,50,0.2)' }}
+                ))}
+
+                <div className="pt-4 flex flex-col gap-3">
+                  <Link href="/store">
+                    <span
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="w-full flex items-center justify-center gap-2 py-3 rounded-full text-sm font-bold bg-[#23432E] text-[#FFFDF7]"
                     >
-                      <LogOut size={16} />
-                      {isRTL ? 'خروج' : 'Sign Out'}
-                    </button>
-                  ) : (
-                    <Link href="/auth">
-                      <span
-                        className="block w-full text-center py-3 rounded-xl text-base font-bold cursor-pointer font-arabic"
-                        style={{ border: '1px solid rgba(200,168,75,0.3)', color: GOLD }}
-                        onClick={() => setIsMobileMenuOpen(false)}
-                      >
-                        {isRTL ? 'تسجيل الدخول' : 'Sign In'}
-                      </span>
-                    </Link>
-                  )}
+                      <Compass size={16} className="text-[#B49A63]" />
+                      <span>{isRTL ? 'تصفح جميع الكتب' : 'Explore Books'}</span>
+                    </span>
+                  </Link>
+                  <button
+                    onClick={() => {
+                      toggleLanguage();
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className="w-full py-2.5 rounded-full border border-[#D6C6A8] text-sm font-bold text-[#777363]"
+                  >
+                    {isRTL ? 'English Version' : 'النسخة العربية'}
+                  </button>
                 </div>
               </div>
             </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          )}
+        </AnimatePresence>
+      </motion.nav>
     </>
   );
 }

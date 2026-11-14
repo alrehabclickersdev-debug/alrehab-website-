@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion';
 import { Link } from 'wouter';
-import { Star, BookOpen, Users } from 'lucide-react';
-import { Author } from '@/services/mock/authors';
+import { Star } from 'lucide-react';
 import { useLanguage } from '@/i18n/LanguageContext';
 
 interface AuthorCardProps {
@@ -10,41 +9,42 @@ interface AuthorCardProps {
 }
 
 export function AuthorCard({ author, index = 0 }: AuthorCardProps) {
-  const { t, isRTL, language } = useLanguage();
+  const { isRTL, language } = useLanguage();
   const name = language === 'ar' ? (author.name_ar || author.nameAr) : (author.name_en || author.nameEn);
   const bio = language === 'ar' ? (author.bio_ar || author.bioAr) : (author.bio_en || author.bioEn);
 
   return (
     <motion.div
-      className="group"
+      className="group font-arabic"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay: index * 0.08 }}
       data-testid={`card-author-${author.id}`}
+      whileHover={{ y: -4 }}
     >
       <Link href={`/authors/${author.id}`}>
-        <div className="cursor-pointer relative rounded-2xl overflow-hidden bg-card border border-border p-6 hover:border-maroon/30 hover:shadow-[0_8px_30px_hsl(342_63%_34%/0.1)] transition-all duration-300">
-          <div className={`flex gap-4 mb-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
+        <div className="cursor-pointer relative rounded-3xl overflow-hidden bg-[#FFFDF7] border border-[#D6C6A8] p-6 hover:border-[#B49A63] shadow-sm hover:shadow-md transition-all duration-300">
+          <div className={`flex gap-4 mb-4 ${isRTL ? 'flex-row' : ''}`}>
             <div className="relative flex-shrink-0">
               <img
                 src={author.photo_url || author.imageUrl || 'https://images.unsplash.com/photo-1544717302-de2939b7ef71?auto=format&fit=crop&w=400&q=80'}
                 alt={name}
-                className="w-16 h-16 rounded-full object-cover ring-2 ring-[hsl(45_85%_52%/0.3)]"
+                className="w-16 h-16 rounded-full object-cover ring-2 ring-[#B49A63]"
                 loading="lazy"
               />
-              <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-[hsl(45_85%_52%)] rounded-full flex items-center justify-center">
-                <Star size={10} fill="hsl(240 15% 4%)" className="text-[hsl(240_15%_4%)]" />
+              <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-[#B49A63] text-[#193A28] rounded-full flex items-center justify-center shadow-sm">
+                <Star size={10} fill="#193A28" />
               </div>
             </div>
             <div className="flex-1 min-w-0">
-              <h3 className={`font-bold text-maroon text-base mb-0.5 ${isRTL ? 'font-arabic text-right' : ''}`}>
+              <h3 className={`font-bold text-[#23432E] text-base mb-0.5 group-hover:text-[#B49A63] transition-colors ${isRTL ? 'text-right' : ''}`}>
                 {name}
               </h3>
-              <p className="text-maroon/60 text-xs">{author.nationality}</p>
-              <div className={`flex items-center gap-1 mt-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                {(author.genres || []).map((g: string) => (
-                  <span key={g} className="px-1.5 py-0.5 bg-[hsl(270_45%_12%)] text-[hsl(270_55%_70%)] text-xs rounded-md">
+              <p className="text-[#777363] text-xs">{author.nationality || (isRTL ? 'مؤلف وأديب' : 'Author')}</p>
+              <div className={`flex items-center gap-1.5 mt-2 ${isRTL ? 'justify-start' : ''}`}>
+                {(author.genres || ['أدب', 'رواية']).slice(0, 2).map((g: string) => (
+                  <span key={g} className="px-2 py-0.5 bg-[#EDE5D4] text-[#23432E] text-[10px] font-bold rounded-full">
                     {g}
                   </span>
                 ))}
@@ -52,11 +52,9 @@ export function AuthorCard({ author, index = 0 }: AuthorCardProps) {
             </div>
           </div>
 
-          <p className={`text-maroon/70 text-xs line-clamp-2 mb-4 ${isRTL ? 'font-arabic text-right' : ''}`}>
-            {bio}
+          <p className={`text-[#777363] text-xs line-clamp-2 leading-relaxed ${isRTL ? 'text-right' : ''}`}>
+            {bio || (isRTL ? 'من مؤلفي دار الرحاب المتميزين في مجالات الأدب والفكر والسرد الروائي.' : 'Distinguished author at Dar Al-Rehab.')}
           </p>
-
-
         </div>
       </Link>
     </motion.div>

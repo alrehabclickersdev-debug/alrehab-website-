@@ -1,4 +1,4 @@
-﻿import { motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { ShoppingBag, Clock, CheckCircle, XCircle, Package } from 'lucide-react';
 import { Link } from 'wouter';
 import { format } from 'date-fns';
@@ -7,10 +7,10 @@ import { useMyOrders } from '@/services/supabase.hooks';
 import { useLanguage } from '@/i18n/LanguageContext';
 
 const STATUS_CONFIG = {
-  pending: { label: 'Pending', labelAr: 'قيد الانتظار', icon: Clock, color: 'text-amber-600 bg-amber-50' },
-  paid: { label: 'Paid', labelAr: 'مدفوع', icon: CheckCircle, color: 'text-green-600 bg-green-50' },
-  delivered: { label: 'Delivered', labelAr: 'تم التسليم', icon: Package, color: 'text-blue-600 bg-blue-50' },
-  cancelled: { label: 'Cancelled', labelAr: 'ملغي', icon: XCircle, color: 'text-red-500 bg-red-50' },
+  pending: { label: 'Pending', labelAr: 'قيد الانتظار والمراجعة', icon: Clock, color: '#B49A63', bg: '#EDE5D4' },
+  paid: { label: 'Confirmed', labelAr: 'تم تأكيد الدفع', icon: CheckCircle, color: '#23432E', bg: 'rgba(35,67,46,0.1)' },
+  delivered: { label: 'Delivered', labelAr: 'تم التسليم للقارئ', icon: Package, color: '#23432E', bg: 'rgba(35,67,46,0.1)' },
+  cancelled: { label: 'Cancelled', labelAr: 'طلب ملغي', icon: XCircle, color: '#DC2626', bg: '#FEF2F2' },
 } as const;
 
 export function MyOrdersPage() {
@@ -20,14 +20,17 @@ export function MyOrdersPage() {
 
   if (!profile) {
     return (
-      <div className="min-h-screen bg-transparent flex items-center justify-center pt-32">
-        <div className="text-center">
-          <ShoppingBag size={64} className="mx-auto text-primary/10 mb-6" />
-          <p className={`text-primary/40 font-bold text-xl mb-6 ${isRTL ? 'font-arabic' : 'font-cinematic'}`}>
-            {isRTL ? 'يجب تسجيل الدخول لعرض طلباتك' : 'Sign in to view your orders'}
+      <div className="min-h-screen flex items-center justify-center pt-32 pb-32" style={{ background: '#F5F0E3' }}>
+        <div className="text-center p-10 rounded-3xl max-w-md mx-4" style={{ background: '#FFFDF7', border: '1px solid #D6C6A8' }}>
+          <ShoppingBag size={56} className="mx-auto mb-4" style={{ color: '#B49A63' }} />
+          <p className="font-bold text-xl mb-6 font-arabic" style={{ color: '#23432E' }}>
+            {isRTL ? 'يُرجى تسجيل الدخول لعرض أرشيف طلباتك' : 'Sign in to view your orders'}
           </p>
           <Link href="/auth">
-            <button className="px-10 py-4 bg-primary text-white font-black rounded-2xl hover:bg-accent hover:text-primary transition-all shadow-xl shadow-primary/20">
+            <button
+              className="px-8 py-3.5 rounded-full font-bold font-arabic transition-all shadow-md"
+              style={{ background: '#23432E', color: '#FFFDF7' }}
+            >
               {isRTL ? 'تسجيل الدخول' : 'Sign In'}
             </button>
           </Link>
@@ -37,35 +40,44 @@ export function MyOrdersPage() {
   }
 
   return (
-    <div className="min-h-screen bg-transparent pt-32 pb-32">
+    <div className="min-h-screen pt-32 pb-32" style={{ background: '#F5F0E3' }}>
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-          <div className={`mb-12 ${isRTL ? 'text-right' : ''}`}>
-            <p className={`text-accent font-black uppercase tracking-[0.3em] text-xs mb-3 ${isRTL ? 'font-arabic' : ''}`}>
-              {isRTL ? 'حسابي' : 'My Account'}
+          <div className={`mb-10 ${isRTL ? 'text-right' : ''}`}>
+            <p className="font-bold uppercase tracking-[0.3em] text-xs mb-2 font-arabic" style={{ color: '#B49A63' }}>
+              {isRTL ? 'سجل القارئ' : 'My Account'}
             </p>
-            <h1 className={`text-5xl font-black text-primary ${isRTL ? 'font-arabic' : 'font-cinematic'}`}>
-              {isRTL ? 'طلباتي' : 'My Orders'}
+            <h1 className="text-4xl md:text-5xl font-black font-arabic" style={{ color: '#23432E' }}>
+              {isRTL ? 'أرشيف طلباتي' : 'My Orders'}
             </h1>
           </div>
 
-          <motion.div 
+          {/* Delivery Note */}
+          <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className={`mb-10 p-6 rounded-[2rem] bg-accent/5 border border-accent/10 flex flex-col sm:flex-row items-center sm:items-start gap-5 ${isRTL ? 'sm:flex-row-reverse text-center sm:text-right' : 'text-center sm:text-left'}`}
+            className={`mb-10 p-6 rounded-3xl flex flex-col sm:flex-row items-center sm:items-start gap-5 ${isRTL ? 'sm:flex-row-reverse text-center sm:text-right' : 'text-center sm:text-left'}`}
+            style={{
+              background: '#FFFDF7',
+              border: '1px solid #D6C6A8',
+              boxShadow: '0 4px 20px rgba(35,67,46,0.04)'
+            }}
           >
-            <div className="w-12 h-12 rounded-2xl bg-accent text-white flex items-center justify-center flex-shrink-0 shadow-lg shadow-accent/20">
+            <div
+              className="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-sm"
+              style={{ background: '#23432E', color: '#B49A63' }}
+            >
               <Package size={24} />
             </div>
             <div>
-              <h3 className={`font-black text-primary mb-2 ${isRTL ? 'font-arabic text-lg' : 'uppercase tracking-wider text-sm'}`}>
-                {isRTL ? 'معلومات التوصيل' : 'Delivery Information'}
+              <h3 className="font-bold text-base mb-1 font-arabic" style={{ color: '#23432E' }}>
+                {isRTL ? 'معلومات الشحن والتوصيل' : 'Delivery Information'}
               </h3>
-              <p className={`text-primary/70 font-bold leading-relaxed ${isRTL ? 'font-arabic text-sm' : 'text-sm'}`}>
-                {isRTL 
-                  ? 'شكراً لثقتكم بنا! يرجى العلم أن مدة التوصيل المعتادة هي خلال 5 أيام عمل كحد أقصى. نحن نعمل جاهدين لضمان وصول طلباتكم في أسرع وقت وبأفضل جودة.' 
-                  : 'Thank you for your trust! Please note that our standard delivery time is a maximum of 5 working days. We are working hard to ensure your orders arrive as quickly and safely as possible.'}
+              <p className="font-arabic text-sm leading-relaxed" style={{ color: '#777363' }}>
+                {isRTL
+                  ? 'شكراً لثقتكم بدار الرحاب. مدة التوصيل القياسية لكافة المحافظات تتم خلال ٣ إلى ٥ أيام عمل كحد أقصى بعناية فائقة وتغليف مكتبي أنيق.'
+                  : 'Thank you for your trust. Standard delivery takes 3 to 5 business days with premium editorial packaging.'}
               </p>
             </div>
           </motion.div>
@@ -73,20 +85,29 @@ export function MyOrdersPage() {
           {isLoading ? (
             <div className="space-y-4">
               {Array.from({ length: 3 }).map((_, i) => (
-                <div key={i} className="bg-card/70 backdrop-blur-xl border-card-border/50 shadow-2xl border border-border rounded-3xl p-8 animate-pulse h-32" />
+                <div key={i} className="rounded-3xl p-8 animate-pulse h-32" style={{ background: '#FFFDF7', border: '1px solid #D6C6A8' }} />
               ))}
             </div>
           ) : !orders?.length ? (
-            <div className="text-center py-24">
-              <div className="w-24 h-24 bg-primary/5 rounded-full flex items-center justify-center mx-auto mb-6">
-                <ShoppingBag size={36} className="text-primary/20" />
+            <div className="text-center py-20 px-6 rounded-3xl" style={{ background: '#FFFDF7', border: '1px solid #D6C6A8' }}>
+              <div
+                className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-5"
+                style={{ background: '#EDE5D4', color: '#B49A63' }}
+              >
+                <ShoppingBag size={36} />
               </div>
-              <p className={`text-primary/40 font-bold text-xl mb-6 ${isRTL ? 'font-arabic' : 'font-cinematic'}`}>
-                {isRTL ? 'لا توجد طلبات بعد' : 'No orders yet'}
+              <p className="font-bold text-xl mb-4 font-arabic" style={{ color: '#23432E' }}>
+                {isRTL ? 'لا توجد طلبات سابقة في سجلك حتى الآن' : 'No orders found yet'}
+              </p>
+              <p className="text-sm mb-6 font-arabic" style={{ color: '#777363' }}>
+                {isRTL ? 'اكتشف مجموعتنا المختارة من الكتب والإصدارات الفكرية والأدبية.' : 'Explore our curated collection of literary works.'}
               </p>
               <Link href="/store">
-                <button className="px-10 py-4 bg-primary text-white font-black rounded-2xl hover:bg-accent hover:text-primary transition-all shadow-xl shadow-primary/20">
-                  {isRTL ? 'ابدأ التسوق' : 'Start Shopping'}
+                <button
+                  className="px-8 py-3.5 rounded-full font-bold font-arabic transition-all shadow-md"
+                  style={{ background: '#23432E', color: '#FFFDF7' }}
+                >
+                  {isRTL ? 'تصفح الإصدارات' : 'Browse Store'}
                 </button>
               </Link>
             </div>
@@ -100,22 +121,30 @@ export function MyOrdersPage() {
                 return (
                   <motion.div
                     key={order.id}
-                    className="bg-card/70 backdrop-blur-xl border-card-border/50 shadow-2xl border border-border rounded-3xl overflow-hidden shadow-sm hover:shadow-lg hover:shadow-primary/5 transition-all"
+                    className="rounded-3xl overflow-hidden transition-all"
+                    style={{
+                      background: '#FFFDF7',
+                      border: '1px solid #D6C6A8',
+                      boxShadow: '0 4px 20px rgba(35,67,46,0.04)'
+                    }}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: i * 0.07 }}
                   >
                     {/* Order Header */}
-                    <div className={`flex items-center justify-between p-6 border-b border-border ${isRTL ? 'flex-row-reverse' : ''}`}>
+                    <div className={`flex items-center justify-between p-6 border-b ${isRTL ? 'flex-row-reverse' : ''}`} style={{ borderColor: '#EDE5D4' }}>
                       <div className={isRTL ? 'text-right' : ''}>
-                        <p className="text-primary/40 font-bold text-xs uppercase tracking-wider mb-1">
-                          {isRTL ? 'رقم الطلب' : 'Order'} #{(order.id as string).slice(0, 8).toUpperCase()}
+                        <p className="font-mono text-xs font-bold uppercase tracking-wider mb-1" style={{ color: '#B49A63' }}>
+                          {isRTL ? 'طلب رقم' : 'Order'} #{(order.id as string).slice(0, 8).toUpperCase()}
                         </p>
-                        <p className="text-primary/60 font-bold text-sm">
-                          {format(new Date(order.created_at), 'dd MMM yyyy — HH:mm')}
+                        <p className="font-bold text-xs" style={{ color: '#777363' }}>
+                          {format(new Date(order.created_at), 'dd MMMM yyyy — HH:mm')}
                         </p>
                       </div>
-                      <div className={`flex items-center gap-2 px-4 py-2 rounded-xl font-black text-sm ${status.color}`}>
+                      <div
+                        className="flex items-center gap-2 px-3.5 py-1.5 rounded-full font-bold text-xs font-arabic"
+                        style={{ background: status.bg, color: status.color, border: `1px solid ${status.color}30` }}
+                      >
                         <StatusIcon size={14} />
                         <span>{isRTL ? status.labelAr : status.label}</span>
                       </div>
@@ -127,28 +156,31 @@ export function MyOrdersPage() {
                         {orderItems.slice(0, 3).map((item, j) => (
                           <div key={j} className={`flex items-center gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
                             {item.books?.cover_url && (
-                              <img src={item.books.cover_url} alt="" className="w-10 h-14 object-cover rounded-lg shadow-sm flex-shrink-0" />
+                              <img src={item.books.cover_url} alt="" className="w-12 h-16 object-cover rounded-lg shadow-sm flex-shrink-0" style={{ border: '1px solid #D6C6A8' }} />
                             )}
                             <div className={`flex-1 ${isRTL ? 'text-right' : ''}`}>
-                              <p className={`text-primary font-bold text-sm ${isRTL ? 'font-arabic' : ''}`}>
+                              <p className="font-bold text-sm font-arabic" style={{ color: '#23432E' }}>
                                 {isRTL ? item.books?.title_ar : item.books?.title_en}
                               </p>
-                              <p className="text-primary/40 text-xs font-bold">
-                                ×{item.quantity} — {(item.quantity * item.unit_price).toFixed(2)} {t.common.currency}
+                              <p className="text-xs font-arabic mt-0.5" style={{ color: '#777363' }}>
+                                {item.quantity} × {(item.unit_price).toFixed(2)} {t.common.currency}
                               </p>
                             </div>
                           </div>
                         ))}
                         {orderItems.length > 3 && (
-                          <p className="text-primary/30 text-sm font-bold">+{orderItems.length - 3} {isRTL ? 'كتب أخرى' : 'more books'}</p>
+                          <p className="text-xs font-bold font-arabic" style={{ color: '#B49A63' }}>
+                            +{orderItems.length - 3} {isRTL ? 'كتب أخرى ضمن الشحنة' : 'more items in this order'}
+                          </p>
                         )}
                       </div>
-                      <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
-                        <span className={`text-primary/40 font-bold text-sm ${isRTL ? 'font-arabic' : ''}`}>
-                          {isRTL ? 'الإجمالي' : 'Total'}
+
+                      <div className={`flex items-center justify-between pt-4 border-t ${isRTL ? 'flex-row-reverse' : ''}`} style={{ borderColor: '#EDE5D4' }}>
+                        <span className="font-bold text-sm font-arabic" style={{ color: '#777363' }}>
+                          {isRTL ? 'المجموع الكلي' : 'Total'}
                         </span>
-                        <span className="text-primary font-black text-xl">
-                          {Number(order.total_amount).toFixed(2)} <span className="text-sm text-primary/40">{t.common.currency}</span>
+                        <span className="font-black text-xl" style={{ color: '#23432E' }}>
+                          {Number(order.total_amount).toFixed(2)} <span className="text-xs font-normal" style={{ color: '#777363' }}>{t.common.currency}</span>
                         </span>
                       </div>
                     </div>
@@ -162,4 +194,3 @@ export function MyOrdersPage() {
     </div>
   );
 }
-

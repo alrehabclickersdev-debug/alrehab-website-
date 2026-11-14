@@ -11,8 +11,8 @@ interface SEOProps {
   locale?: string;
 }
 
-const SITE_NAME = 'ممر الكتب | Mamar Elkotob Publishing';
-const SITE_URL = import.meta.env.VITE_SITE_URL || 'https://mamarelkotob.com';
+const SITE_NAME = 'دار الرحاب للنشر والتوزيع | Dar Al-Rehab Publishing';
+const SITE_URL = import.meta.env.VITE_SITE_URL || 'https://alrehab-publishing.com';
 const DEFAULT_IMAGE = `${SITE_URL}/og-default.jpg`;
 
 function setMeta(property: string, content: string) {
@@ -52,8 +52,8 @@ export function SEO({
     const resolvedTitle = title ? `${title} — ${SITE_NAME}` : SITE_NAME;
     const resolvedDescription = description ||
       (language === 'ar'
-        ? 'اكتشف عالمًا من الكتب والروايات العربية والإنجليزية في دار ممر الكتب للنشر والتوزيع.'
-        : 'Discover Arabic and English books, novels, and literary worlds at Mamar Elkotob Publishing.');
+        ? 'دار الرحاب للنشر والتوزيع — نمنح الكلمات بيتاً، والأفكار طريقاً إلى القارئ.'
+        : 'Dar Al-Rehab Publishing House — From the realm of an idea to the eternity of a story.');
 
     // ── Primary ─────────────────────────────────────────────────
     document.title = resolvedTitle;
@@ -76,7 +76,7 @@ export function SEO({
     setMeta('twitter:title', resolvedTitle);
     setMeta('twitter:description', resolvedDescription);
     setMeta('twitter:image', resolvedImage);
-    setMeta('twitter:site', '@zahmetkotab'); // Update with your Twitter handle
+    setMeta('twitter:site', '@dar_alrehab');
 
     // ── Article-specific (blog posts) ────────────────────────
     if (type === 'article' && publishedAt) {

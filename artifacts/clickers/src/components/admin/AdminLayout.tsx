@@ -46,13 +46,13 @@ function AdminSidebar({
     <motion.aside
       animate={{ width: collapsed ? 72 : 240 }}
       transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
-      className={`flex-shrink-0 admin-sidebar flex flex-col relative z-20 ${isRTL ? 'border-l border-white/5' : 'border-r border-white/5'}`}
-      style={{ minHeight: '100vh' }}
+      className={`flex-shrink-0 admin-sidebar flex flex-col relative z-20 bg-[#161b22] ${isRTL ? 'border-l border-white/10' : 'border-r border-white/10'}`}
+      style={{ minHeight: '100vh', backgroundColor: '#161b22' }}
     >
       {/* Header */}
       <div className="px-4 py-5 border-b border-white/5 flex items-center gap-3">
-        <div className="w-9 h-9 flex-shrink-0 rounded-xl admin-logo-icon flex items-center justify-center shadow-lg text-sm">
-          <span>🚪</span>
+        <div className="w-9 h-9 flex-shrink-0 rounded-xl admin-logo-icon flex items-center justify-center shadow-lg text-sm bg-emerald-950 text-amber-400 border border-amber-600/40">
+          <span>📚</span>
         </div>
         {!collapsed && (
           <motion.div
@@ -61,7 +61,7 @@ function AdminSidebar({
             exit={{ opacity: 0 }}
             className="flex-1 min-w-0"
           >
-            <p className="text-white font-bold text-sm font-arabic truncate">ممر الكتب</p>
+            <p className="text-white font-bold text-sm font-arabic truncate">دار الرحاب</p>
             <p className="text-slate-400 text-[10px] uppercase tracking-widest font-arabic">
               {isRTL ? 'لوحة الإدارة' : 'Admin Panel'}
             </p>
@@ -212,22 +212,26 @@ export function AdminLayout({ children }: { children: ReactNode }) {
   }
 
   return (
-    <div className={`flex min-h-screen admin-bg ${isRTL ? 'font-arabic' : ''}`} dir={isRTL ? 'rtl' : 'ltr'}>
+    <div 
+      className={`flex min-h-screen admin-bg bg-[#0d1117] text-slate-100 ${isRTL ? 'font-arabic' : ''}`} 
+      style={{ backgroundColor: '#0d1117', color: '#f8fafc' }}
+      dir={isRTL ? 'rtl' : 'ltr'}
+    >
       <AdminSidebar
         newOrderCount={toasts.length}
         onBellClick={() => navigate('/admin/orders')}
         collapsed={sidebarCollapsed}
         onToggle={() => setSidebarCollapsed((v) => !v)}
       />
-      <main className="flex-1 overflow-auto min-w-0 flex flex-col">
+      <main className="flex-1 overflow-auto min-w-0 flex flex-col bg-[#0d1117]" style={{ backgroundColor: '#0d1117' }}>
         {/* Top Navbar */}
-        <header className="px-6 py-4 border-b border-white/10 bg-slate-900/80 backdrop-blur-xl flex items-center justify-between gap-4 sticky top-0 z-30 shadow-lg">
+        <header className="px-6 py-4 border-b border-white/10 bg-[#161b22]/95 backdrop-blur-xl flex items-center justify-between gap-4 sticky top-0 z-30 shadow-lg">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-base">
-              🚪
+            <div className="w-8 h-8 rounded-lg bg-emerald-950 border border-amber-600/40 flex items-center justify-center text-base">
+              📚
             </div>
             <div>
-              <h2 className="text-white font-bold text-sm font-arabic leading-tight">لوحة إدارة ممر الكتب</h2>
+              <h2 className="text-white font-bold text-sm font-arabic leading-tight">لوحة إدارة دار الرحاب</h2>
               <p className="text-slate-400 text-[10px] uppercase tracking-wider font-arabic">
                 {isRTL ? 'مركز التحكم' : 'Control Center'}
               </p>
@@ -318,8 +322,8 @@ export function AdminPageHeader({
   return (
     <div className="flex items-start justify-between mb-8 gap-4 flex-wrap">
       <div>
-        <h1 className="text-2xl font-bold text-white mb-0.5">{title}</h1>
-        {subtitle && <p className="text-slate-400 text-sm">{subtitle}</p>}
+        <h1 className="text-2xl md:text-3xl font-black text-white mb-1" style={{ color: '#ffffff' }}>{title}</h1>
+        {subtitle && <p className="text-slate-400 text-sm font-medium" style={{ color: '#94a3b8' }}>{subtitle}</p>}
       </div>
       {action}
     </div>
@@ -338,35 +342,36 @@ export function StatCard({
   color?: 'violet' | 'emerald' | 'amber' | 'sky' | 'rose';
 }) {
   const colorMap = {
-    violet: 'from-violet-600/20 to-violet-600/5 border-violet-500/20 text-violet-400',
-    emerald: 'from-emerald-600/20 to-emerald-600/5 border-emerald-500/20 text-emerald-400',
-    amber:   'from-amber-600/20 to-amber-600/5 border-amber-500/20 text-amber-400',
-    sky:     'from-sky-600/20 to-sky-600/5 border-sky-500/20 text-sky-400',
-    rose:    'from-rose-600/20 to-rose-600/5 border-rose-500/20 text-rose-400',
+    violet: 'from-violet-950/60 to-slate-900/90 border-violet-500/30 text-violet-400',
+    emerald: 'from-emerald-950/60 to-slate-900/90 border-emerald-500/30 text-emerald-400',
+    amber:   'from-amber-950/60 to-slate-900/90 border-amber-500/30 text-amber-400',
+    sky:     'from-sky-950/60 to-slate-900/90 border-sky-500/30 text-sky-400',
+    rose:    'from-rose-950/60 to-slate-900/90 border-rose-500/30 text-rose-400',
   };
 
   return (
     <motion.div
       className={`admin-card rounded-2xl p-6 border bg-gradient-to-br ${colorMap[color]}`}
+      style={{ backgroundColor: '#161b22', border: '1px solid rgba(255, 255, 255, 0.1)' }}
       whileHover={{ y: -3, scale: 1.01 }}
       transition={{ duration: 0.18 }}
     >
       <div className="flex items-start justify-between mb-5">
-        <div className={`w-10 h-10 rounded-xl flex items-center justify-center bg-current/10 ${colorMap[color].split(' ').pop()}`}>
+        <div className={`w-10 h-10 rounded-xl flex items-center justify-center bg-white/10 ${colorMap[color].split(' ').pop()}`}>
           <Icon size={20} className="opacity-90" />
         </div>
         {trend && (
           <span className={`text-xs font-bold px-2 py-1 rounded-lg ${
             trend.value >= 0
-              ? 'bg-emerald-500/15 text-emerald-400'
-              : 'bg-rose-500/15 text-rose-400'
+              ? 'bg-emerald-500/20 text-emerald-300'
+              : 'bg-rose-500/20 text-rose-300'
           }`}>
             {trend.value >= 0 ? '↑' : '↓'} {Math.abs(trend.value)}%
           </span>
         )}
       </div>
-      <p className="text-3xl font-bold text-white mb-1 tabular-nums">{value}</p>
-      <p className="text-slate-400 font-medium text-xs uppercase tracking-widest">{label}</p>
+      <p className="text-3xl font-black text-white mb-1 tabular-nums" style={{ color: '#ffffff' }}>{value}</p>
+      <p className="text-slate-300 font-bold text-xs uppercase tracking-wider" style={{ color: '#cbd5e1' }}>{label}</p>
     </motion.div>
   );
 }

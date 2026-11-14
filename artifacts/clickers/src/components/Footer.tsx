@@ -1,116 +1,126 @@
 import { Link } from 'wouter';
 import { motion } from 'framer-motion';
-import { FaTwitter, FaInstagram, FaYoutube, FaTiktok } from 'react-icons/fa';
+import { FaTwitter, FaInstagram, FaFacebookF, FaLinkedinIn, FaYoutube } from 'react-icons/fa';
+import { Mail, Phone, MapPin, ArrowRight, ArrowLeft } from 'lucide-react';
 import { useLanguage } from '@/i18n/LanguageContext';
 
 export function Footer() {
-  const { t, isRTL } = useLanguage();
-
-  const platformLinks = [
-    { href: '/store', label: t.nav.store },
-    { href: '/worlds', label: t.nav.worlds },
-    { href: '/authors', label: t.nav.authors },
-    { href: '/blog', label: t.nav.blog },
-    { href: '/media', label: t.nav.media },
-  ];
-
-  const companyLinks = [
-    { href: '/about', label: isRTL ? 'من نحن' : 'About Us' },
-    { href: '/contact', label: isRTL ? 'تواصل معنا' : 'Contact Us' },
-    { href: '/faq', label: isRTL ? 'الأسئلة الشائعة' : 'FAQ' },
-    { href: '/shipping', label: isRTL ? 'الشحن والإرجاع' : 'Shipping & Returns' },
-  ];
-
-  const legalLinks = [
-    { href: '/privacy', label: isRTL ? 'سياسة الخصوصية' : 'Privacy Policy' },
-    { href: '/terms', label: isRTL ? 'شروط الخدمة' : 'Terms of Service' },
-  ];
+  const { isRTL } = useLanguage();
 
   return (
     <footer
-      className="relative mt-24 text-primary"
+      className="relative text-[#FFFDF7] overflow-hidden"
       style={{
-        background: 'linear-gradient(180deg, #1f1107 0%, #120904 100%)',
-        borderTop: '1px solid rgba(200, 168, 75, 0.25)',
+        backgroundColor: '#193A28',
+        borderTop: '2px solid #B49A63',
       }}
       dir={isRTL ? 'rtl' : 'ltr'}
     >
+      {/* Decorative Botanical & Gold Glow in Background */}
       <div
-        className="absolute inset-0 pointer-events-none opacity-[0.05]"
-        style={{
-          background: 'radial-gradient(ellipse 80% 60% at 50% 100%, rgba(200,168,75,0.2) 0%, transparent 70%)',
-        }}
+        className="absolute top-0 right-0 w-96 h-96 rounded-full pointer-events-none opacity-10 blur-3xl"
+        style={{ background: '#B49A63' }}
       />
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-12">
-          {/* Brand */}
-          <div className="lg:col-span-2 flex flex-col justify-between">
+      <div
+        className="absolute bottom-0 left-0 w-96 h-96 rounded-full pointer-events-none opacity-10 blur-3xl"
+        style={{ background: '#23432E' }}
+      />
+
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-12 font-arabic">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 mb-16">
+
+          {/* ── Brand Col (5 cols) ── */}
+          <div className="lg:col-span-5 flex flex-col justify-between">
             <div>
+              {/* Logo */}
               <Link href="/">
-                <div className="flex items-center gap-4 mb-6 cursor-pointer w-fit group">
+                <div className="flex items-center gap-3.5 mb-6 cursor-pointer w-fit group">
                   <div 
-                    className="w-12 h-12 md:w-14 md:h-14 rounded-2xl flex items-center justify-center text-2xl md:text-3xl shadow-lg group-hover:scale-105 transition-transform duration-300"
-                    style={{ background: 'rgba(200, 168, 75, 0.15)', border: '1px solid rgba(200, 168, 75, 0.35)', color: '#c8a84b' }}
+                    className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform duration-300"
+                    style={{ background: '#23432E', border: '1px solid #B49A63', color: '#B49A63' }}
                   >
-                    🚪
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z" />
+                      <path d="M6 6h10" />
+                      <path d="M6 10h10" />
+                      <path d="M6 14h6" />
+                    </svg>
                   </div>
-                  <div className="flex flex-col gap-1">
-                    <span className="font-arabic font-black text-2xl md:text-3xl leading-none" style={{ color: '#f0e0c0' }}>
-                      ممر الكتب
+                  <div className="flex flex-col">
+                    <span className="font-arabic font-extrabold text-2xl text-[#FFFDF7] leading-none">
+                      دار الرحاب
                     </span>
-                    <span className="text-[11px] uppercase tracking-[0.25em] font-cinematic font-bold" style={{ color: '#c8a84b' }}>
-                      Dar Nashr
+                    <span className="font-arabic text-xs font-bold text-[#B49A63] tracking-widest mt-1">
+                      {isRTL ? 'للنشر والتوزيع' : 'Publishing & Distribution'}
                     </span>
                   </div>
                 </div>
               </Link>
-              <p className={`text-sm leading-relaxed mb-8 max-w-[280px] ${isRTL ? 'font-arabic' : ''}`} style={{ color: 'rgba(240, 224, 192, 0.7)' }}>
-                {t.footer.tagline}
+
+              <p className="text-sm leading-relaxed text-[#D6C6A8] max-w-md mb-8">
+                {isRTL
+                  ? 'من رحاب الفكرة... إلى خلود الحكاية. نمنح الكلمات بيتاً والأفكار طريقاً إلى القارئ، مع التزام تام بالتميز التحريري والجمالي في صناعة الكتاب العربي.'
+                  : 'From the space of an idea to the eternity of a story. Providing ideas a home and stories an enduring path to readers with utmost editorial distinction.'}
               </p>
+
+              {/* Contact Mini List */}
+              <div className="space-y-2.5 text-xs text-[#D6C6A8]">
+                <div className="flex items-center gap-3">
+                  <Mail size={15} className="text-[#B49A63] flex-shrink-0" />
+                  <span>contact@alrehab-publishing.com</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Phone size={15} className="text-[#B49A63] flex-shrink-0" />
+                  <span dir="ltr">+20 100 000 0000</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <MapPin size={15} className="text-[#B49A63] flex-shrink-0" />
+                  <span>{isRTL ? 'القاهرة — المعادي / الرياض — حي العليا' : 'Cairo / Riyadh'}</span>
+                </div>
+              </div>
             </div>
-            
+
             {/* Social Links */}
-            <div className={`flex gap-4 ${isRTL ? 'justify-start' : 'justify-start'}`}>
+            <div className="flex gap-3 mt-8">
               {[
                 { icon: FaTwitter, href: '#', label: 'Twitter' },
                 { icon: FaInstagram, href: '#', label: 'Instagram' },
+                { icon: FaFacebookF, href: '#', label: 'Facebook' },
+                { icon: FaLinkedinIn, href: '#', label: 'LinkedIn' },
                 { icon: FaYoutube, href: '#', label: 'YouTube' },
-                { icon: FaTiktok, href: '#', label: 'TikTok' },
               ].map(({ icon: Icon, href, label }) => (
                 <motion.a
                   key={label}
                   href={href}
-                  className="w-10 h-10 flex items-center justify-center rounded-xl transition-all duration-300"
-                  style={{
-                    background: 'rgba(200, 168, 75, 0.08)',
-                    border: '1px solid rgba(200, 168, 75, 0.2)',
-                    color: '#c8a84b',
-                  }}
-                  whileHover={{ y: -4, background: 'rgba(200, 168, 75, 0.2)', borderColor: '#c8a84b' }}
+                  className="w-9 h-9 flex items-center justify-center rounded-xl transition-all duration-300 border border-[#B49A63]/30 bg-[#23432E] text-[#B49A63] hover:text-[#FFFDF7] hover:border-[#B49A63]"
+                  whileHover={{ y: -3, scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   aria-label={label}
                 >
-                  <Icon size={18} />
+                  <Icon size={15} />
                 </motion.a>
               ))}
             </div>
           </div>
 
-          {/* Platform Links */}
-          <div className="lg:col-span-1">
-            <h4 className={`font-bold text-[11px] mb-8 uppercase tracking-[0.2em] ${isRTL ? 'font-arabic text-right' : 'font-cinematic'}`} style={{ color: '#c8a84b' }}>
-              {t.footer.platform}
+          {/* ── Quick Links (3 cols) ── */}
+          <div className="lg:col-span-3">
+            <h4 className="text-sm font-bold text-[#B49A63] uppercase tracking-wider mb-6 flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-[#B49A63]" />
+              <span>{isRTL ? 'أقسام الدار' : 'Navigation'}</span>
             </h4>
-            <ul className={`space-y-4 ${isRTL ? 'text-right' : 'text-left'}`}>
-              {platformLinks.map((link: { href: string; label: string }) => (
-                <li key={link.href}>
+            <ul className="space-y-3.5 text-sm text-[#D6C6A8]">
+              {[
+                { href: '/', label: isRTL ? 'الرئيسية' : 'Home' },
+                { href: '/store', label: isRTL ? 'أحدث الإصدارات' : 'Latest Releases' },
+                { href: '/about', label: isRTL ? 'عن دار الرحاب' : 'About Dar Al-Rehab' },
+                { href: '/authors', label: isRTL ? 'مؤلفو الدار' : 'Authors' },
+                { href: '/blog', label: isRTL ? 'الأخبار والفعاليات' : 'News & Events' },
+                { href: '/auth', label: isRTL ? 'انشر كتابك معنا' : 'Publish With Us' },
+              ].map((link) => (
+                <li key={link.label}>
                   <Link href={link.href}>
-                    <span 
-                      className={`font-bold text-[13px] transition-colors duration-300 cursor-pointer ${isRTL ? 'font-arabic' : ''}`}
-                      style={{ color: 'rgba(240, 224, 192, 0.7)' }}
-                      onMouseEnter={(e) => (e.currentTarget.style.color = '#c8a84b')}
-                      onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(240, 224, 192, 0.7)')}
-                    >
+                    <span className="hover:text-[#FFFDF7] hover:translate-x-1 transition-all inline-block cursor-pointer">
                       {link.label}
                     </span>
                   </Link>
@@ -119,102 +129,63 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Company Links */}
-          <div className="lg:col-span-1">
-            <h4 className={`font-bold text-[11px] mb-8 uppercase tracking-[0.2em] ${isRTL ? 'font-arabic text-right' : 'font-cinematic'}`} style={{ color: '#c8a84b' }}>
-              {t.footer.company}
+          {/* ── Newsletter & Support (4 cols) ── */}
+          <div className="lg:col-span-4">
+            <h4 className="text-sm font-bold text-[#B49A63] uppercase tracking-wider mb-6 flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-[#B49A63]" />
+              <span>{isRTL ? 'النشرة الأدبية' : 'Literary Gazette'}</span>
             </h4>
-            <ul className={`space-y-4 ${isRTL ? 'text-right' : 'text-left'}`}>
-              {companyLinks.map((link: { href: string; label: string }) => (
-                <li key={link.label}>
-                  <a
-                    href={link.href}
-                    className={`font-bold text-[13px] transition-colors duration-300 ${isRTL ? 'font-arabic' : ''}`}
-                    style={{ color: 'rgba(240, 224, 192, 0.7)' }}
-                    onMouseEnter={(e) => (e.currentTarget.style.color = '#c8a84b')}
-                    onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(240, 224, 192, 0.7)')}
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Newsletter Column */}
-          <div className="lg:col-span-2">
-             <h4 className={`font-bold text-[11px] mb-8 uppercase tracking-[0.2em] ${isRTL ? 'font-arabic text-right' : 'font-cinematic'}`} style={{ color: '#c8a84b' }}>
-              {t.footer.newsletter}
-            </h4>
-            <p className={`text-[13px] mb-6 leading-relaxed ${isRTL ? 'font-arabic text-right' : ''}`} style={{ color: 'rgba(240, 224, 192, 0.7)' }}>
-              {t.footer.newsletterDesc}
+            <p className="text-sm text-[#D6C6A8] leading-relaxed mb-5">
+              {isRTL
+                ? 'انضم إلى رواد دار الرحاب وكن أول من يطلع على إصداراتنا الحصرية وفعاليات توقيع الكتب.'
+                : 'Subscribe to receive the latest releases, author dialogues, and literary event updates.'}
             </p>
-            <div className={`relative ${isRTL ? 'text-right' : 'text-left'}`}>
-               <input
-                  type="email"
-                  placeholder={t.footer.emailPlaceholder}
-                  className="w-full rounded-2xl px-5 py-4 text-sm font-medium focus:outline-none transition-all duration-300"
-                  style={{
-                    background: 'rgba(10, 5, 2, 0.6)',
-                    border: '1px solid rgba(200, 168, 75, 0.3)',
-                    color: '#f0e0c0',
-                  }}
-                  data-testid="newsletter-email"
-                />
-                <button
-                  className={`absolute top-1.5 bottom-1.5 px-6 rounded-xl text-xs font-bold transition-all ${isRTL ? 'left-1.5' : 'right-1.5'}`}
-                  style={{ background: '#c8a84b', color: '#1a0f05' }}
-                  data-testid="newsletter-subscribe"
-                >
-                  {t.footer.subscribe}
-                </button>
+            
+            <form onSubmit={(e) => e.preventDefault()} className="flex flex-col sm:flex-row gap-2 mb-6">
+              <input
+                type="email"
+                placeholder={isRTL ? 'بريدك الإلكتروني...' : 'Your email address...'}
+                className="px-4 py-3 rounded-full bg-[#23432E] border border-[#D6C6A8]/40 text-[#FFFDF7] placeholder-[#D6C6A8]/60 text-xs focus:outline-none focus:border-[#B49A63] flex-1"
+              />
+              <button
+                type="submit"
+                className="px-6 py-3 rounded-full bg-[#B49A63] text-[#193A28] font-bold text-xs hover:bg-[#C5AD7D] transition-colors flex items-center justify-center gap-1.5 flex-shrink-0"
+              >
+                <span>{isRTL ? 'اشتراك' : 'Join'}</span>
+                {isRTL ? <ArrowLeft size={14} /> : <ArrowRight size={14} />}
+              </button>
+            </form>
+
+            <div className="p-4 rounded-2xl bg-[#23432E]/60 border border-[#D6C6A8]/20 text-xs text-[#D6C6A8] leading-relaxed">
+              <span className="text-[#B49A63] font-bold block mb-1">
+                {isRTL ? '✦ معايير النشر الرفيعة' : '✦ Refined Standards'}
+              </span>
+              {isRTL
+                ? 'تخضع جميع المخطوطات للجنة تحكيم متخصصة لضمان جودة المحتوى وقيمته الفكرية والأدبية.'
+                : 'All manuscripts undergo specialized editorial review to ensure intellectual and artistic excellence.'}
             </div>
           </div>
+
         </div>
 
-        <div className="mt-20 pt-10 border-t border-accent/20 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className={`flex flex-col md:flex-row items-center gap-4 ${isRTL ? 'md:flex-row-reverse' : ''}`}>
-            <p className="text-[11px] font-bold uppercase tracking-wider leading-none" style={{ color: 'rgba(240, 224, 192, 0.5)' }}>
-              {t.footer.copyright}
-            </p>
-            <div className="hidden md:block h-4 w-px bg-accent/20" />
-            <div className="flex items-center gap-4">
-              {legalLinks.map((link) => (
-                <a key={link.label} href={link.href} className="text-[11px] font-bold uppercase tracking-wider transition-colors" style={{ color: 'rgba(240, 224, 192, 0.5)' }}>
-                  {link.label}
-                </a>
-              ))}
-            </div>
-          </div>
-
-          <div className={`flex items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
-             <div className={`flex items-center gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
-               <div className={`flex flex-col justify-center ${isRTL ? 'text-left' : 'text-right'}`}>
-                  <span className="text-xs md:text-[11px] font-bold uppercase tracking-[0.2em] mb-1" style={{ color: 'rgba(240, 224, 192, 0.5)' }}>
-                     {isRTL ? 'شريك الابتكار التكنولوجي' : 'Technology & Innovation Partner'}
-                  </span>
-                  <span className="text-[8px] md:text-[11px] uppercase tracking-[0.1em]" style={{ color: 'rgba(240, 224, 192, 0.3)' }}>
-                     {isRTL ? 'تم التطوير والتصميم بواسطة' : 'Designed & Developed by'}
-                  </span>
-               </div>
-               
-               <div className="h-10 w-px bg-accent/20 hidden md:block" />
-               
-               <a href="#" className={`flex items-center gap-4 group transition-all duration-500 scale-100 hover:scale-105 origin-right ${isRTL ? 'flex-row-reverse origin-left' : ''}`}>
-                  <div className="relative w-14 h-14 md:w-16 md:h-16 rounded-2xl overflow-hidden shadow-[0_0_20px_rgba(45,136,255,0.1)] border border-white/10 group-hover:border-[#2d88ff]/40 transition-[border-color,box-shadow,transform] duration-500">
-                     <img src="/clickers-logo.jpg" alt="Clickers Creations" className="w-full h-full object-cover" />
-                     <div className="absolute inset-0 bg-[#2d88ff]/0 group-hover:bg-[#2d88ff]/10 transition-colors duration-500 Mix-blend-overlay" />
-                  </div>
-                  <div className={`flex flex-col ${isRTL ? 'text-right' : 'text-left'}`}>
-                    <span className="font-black text-white text-base md:text-lg uppercase tracking-[0.2em] group-hover:text-[#2d88ff] transition-colors duration-500 font-sans">
-                       Clickers
-                    </span>
-                    <span className="text-xs font-bold text-white/40 uppercase tracking-[0.4em] group-hover:text-white/60 transition-colors">
-                       Creations
-                    </span>
-                  </div>
-               </a>
-            </div>
+        {/* ── Bottom Bar ── */}
+        <div className="pt-8 border-t border-[#D6C6A8]/20 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#D6C6A8]">
+          <p>
+            {isRTL
+              ? '© 2026 دار الرحاب للنشر والتوزيع. جميع الحقوق محفوظة.'
+              : '© 2026 Dar Al-Rehab Publishing House. All rights reserved.'}
+          </p>
+          <div className="flex gap-6">
+            <Link href="/about">
+              <span className="hover:text-[#FFFDF7] cursor-pointer">
+                {isRTL ? 'سياسة النشر والخصوصية' : 'Publishing & Privacy Policy'}
+              </span>
+            </Link>
+            <Link href="/about#contact">
+              <span className="hover:text-[#FFFDF7] cursor-pointer">
+                {isRTL ? 'شروط الخدمة' : 'Terms of Service'}
+              </span>
+            </Link>
           </div>
         </div>
       </div>
