@@ -39,30 +39,33 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
 
   async function fetchProfile(userId: string, userObj?: User | null) {
-    const { data, error } = await (supabase.from('profiles') as any)
-      .select('*')
-      .eq('id', userId)
-      .maybeSingle();
+    try {
+      const { data, error } = await (supabase.from('profiles') as any)
+        .select('*')
+        .eq('id', userId)
+        .maybeSingle();
 
-    if (!error && data) {
-      setProfile(data as UserProfile);
-    } else {
-      // Profile missing (e.g. trigger didn't fire) -> create default profile row with role 'user'
-      const targetUser = userObj || user;
-      if (targetUser) {
-        const newProfile = {
-          id: userId,
-          email: targetUser.email || '',
-          full_name: targetUser.user_metadata?.full_name || targetUser.email?.split('@')[0] || 'User',
-          role: 'user',
-        };
-        const { data: createdData } = await (supabase.from('profiles') as any)
-          .upsert(newProfile, { onConflict: 'id' })
-          .select()
-          .maybeSingle();
-
-        setProfile((createdData as UserProfile) || { ...newProfile, phone: null, avatar_url: null });
+      if (!error && data) {
+        setProfile(data as UserProfile);
+        return;
       }
+    } catch {
+      // ignore select error
+    }
+
+    // Fallback: derive safe profile from session to avoid redundant 403 upsert attempts
+    const targetUser = userObj || user;
+    if (targetUser) {
+      const isAdminEmail = targetUser.email === 'darel.rehab3@gmail.com' || targetUser.email === 'avatar29200@gmail.com';
+      const fallbackProfile: UserProfile = {
+        id: userId,
+        email: targetUser.email || '',
+        full_name: targetUser.user_metadata?.full_name || targetUser.email?.split('@')[0] || 'User',
+        phone: null,
+        avatar_url: null,
+        role: targetUser.user_metadata?.role || (isAdminEmail ? 'admin' : 'user'),
+      };
+      setProfile(fallbackProfile);
     }
   }
 

@@ -82,7 +82,26 @@ interface CartContextValue {
 }
 
 const CartContext = createContext<CartContextValue | null>(null);
-const CART_KEY = 'zahmet_kotab_cart';
+const CART_KEY = 'alrehab_cart';
+const LEGACY_CART_KEY = 'zahmet_kotab_cart';
+
+// Safe localStorage setter that handles QuotaExceededError and purges bloated caches
+function safeSaveCart(items: CartItem[]) {
+  const serialized = JSON.stringify(items);
+  try {
+    localStorage.setItem(CART_KEY, serialized);
+  } catch (err) {
+    // If quota exceeded, clean up large cache keys and retry
+    try {
+      localStorage.removeItem('CLICKERS_OFFLINE_CACHE');
+      localStorage.removeItem(LEGACY_CART_KEY);
+      localStorage.setItem(CART_KEY, serialized);
+    } catch {
+      // If still fails, fail gracefully without crashing React
+      console.warn('Cart storage quota exceeded; maintaining cart in memory.');
+    }
+  }
+}
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(cartReducer, { items: [], isOpen: false });
@@ -90,16 +109,21 @@ export function CartProvider({ children }: { children: ReactNode }) {
   // Load persisted cart on mount
   useEffect(() => {
     try {
-      const saved = localStorage.getItem(CART_KEY);
-      if (saved) dispatch({ type: 'LOAD', payload: JSON.parse(saved) });
+      // Clean up any oversized offline cache immediately
+      localStorage.removeItem('CLICKERS_OFFLINE_CACHE');
+
+      const saved = localStorage.getItem(CART_KEY) || localStorage.getItem(LEGACY_CART_KEY);
+      if (saved) {
+        dispatch({ type: 'LOAD', payload: JSON.parse(saved) });
+      }
     } catch {
       // ignore
     }
   }, []);
 
-  // Persist cart on every change
+  // Persist cart safely on every change
   useEffect(() => {
-    localStorage.setItem(CART_KEY, JSON.stringify(state.items));
+    safeSaveCart(state.items);
   }, [state.items]);
 
   const totalItems = state.items.reduce((acc, i) => acc + i.quantity, 0);

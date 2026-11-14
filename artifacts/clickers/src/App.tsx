@@ -1,8 +1,6 @@
 import { Switch, Route, Router as WouterRouter, useLocation } from "wouter";
 import { Suspense, lazy, useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { persistQueryClient } from '@tanstack/react-query-persist-client';
-import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister';
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { LanguageProvider } from "@/i18n/LanguageContext";
@@ -65,19 +63,12 @@ const queryClient = new QueryClient({
   },
 });
 
-// ── PERSISTENCE: Save cache to localStorage ────────────────────
-// This is the "Secret Weapon" for high-traffic browsing.
-// Users who return to the site hit THE DISK, not THE DATABASE.
-const localStoragePersister = createSyncStoragePersister({
-  storage: window.localStorage,
-  key: 'CLICKERS_OFFLINE_CACHE',
-});
-
-persistQueryClient({
-  queryClient: queryClient as any,
-  persister: localStoragePersister,
-  maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
-});
+// Purge any bloated offline cache from localStorage to preserve storage quota
+try {
+  window.localStorage.removeItem('CLICKERS_OFFLINE_CACHE');
+} catch {
+  // ignore
+}
 
 function ScrollToTop() {
   const [pathname] = useLocation();
