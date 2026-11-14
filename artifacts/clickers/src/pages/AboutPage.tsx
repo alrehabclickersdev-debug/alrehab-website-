@@ -206,7 +206,9 @@ export function AboutPage() {
                       <div className="w-9 h-9 rounded-full bg-[#EDE5D4] flex items-center justify-center text-[#B49A63]">
                         <Phone size={16} />
                       </div>
-                      <span dir="ltr">+20 100 000 0000</span>
+                      <a href="tel:01062260194" className="hover:text-[#B49A63] transition-colors font-bold tracking-wider" dir="ltr">
+                        01062260194
+                      </a>
                     </div>
 
                     <div className="flex items-center gap-3">

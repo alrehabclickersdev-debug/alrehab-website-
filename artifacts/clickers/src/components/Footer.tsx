@@ -1,7 +1,7 @@
 import { Link } from 'wouter';
 import { motion } from 'framer-motion';
-import { FaTwitter, FaInstagram, FaFacebookF, FaLinkedinIn, FaYoutube } from 'react-icons/fa';
-import { Mail, Phone, MapPin, ArrowRight, ArrowLeft } from 'lucide-react';
+import { FaInstagram, FaFacebookF } from 'react-icons/fa';
+import { Phone, ArrowRight, ArrowLeft } from 'lucide-react';
 import { useLanguage } from '@/i18n/LanguageContext';
 
 export function Footer() {
@@ -26,15 +26,15 @@ export function Footer() {
         style={{ background: '#23432E' }}
       />
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-12 font-arabic">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 mb-16">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-12 font-arabic">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 mb-14">
 
           {/* ── Brand Col (5 cols) ── */}
           <div className="lg:col-span-5 flex flex-col justify-between">
             <div>
               {/* Logo */}
               <Link href="/">
-                <div className="flex items-center gap-3.5 mb-6 cursor-pointer w-fit group">
+                <div className="flex items-center gap-3.5 mb-5 cursor-pointer w-fit group">
                   <img
                     src="/logo.png"
                     alt="دار الرحاب للنشر والتوزيع"
@@ -51,49 +51,52 @@ export function Footer() {
                 </div>
               </Link>
 
-              <p className="text-sm leading-relaxed text-[#D6C6A8] max-w-md mb-8">
+              <p className="text-sm leading-relaxed text-[#D6C6A8] max-w-md mb-6">
                 {isRTL
                   ? 'من رحاب الفكرة... إلى خلود الحكاية. نمنح الكلمات بيتاً والأفكار طريقاً إلى القارئ، مع التزام تام بالتميز التحريري والجمالي في صناعة الكتاب العربي.'
-                  : 'From the space of an idea to the eternity of a story. Providing ideas a home and stories an enduring path to readers with utmost editorial distinction.'}
+                  : 'From the space of an idea to the eternity of a story. Providing words a sanctuary and ideas an enduring path to the reader.'}
               </p>
 
-              {/* Contact Mini List */}
-              <div className="space-y-2.5 text-xs text-[#D6C6A8]">
-                <div className="flex items-center gap-3">
-                  <Mail size={15} className="text-[#B49A63] flex-shrink-0" />
-                  <span>contact@alrehab-publishing.com</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Phone size={15} className="text-[#B49A63] flex-shrink-0" />
-                  <span dir="ltr">+20 100 000 0000</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <MapPin size={15} className="text-[#B49A63] flex-shrink-0" />
-                  <span>{isRTL ? 'القاهرة — المعادي / الرياض — حي العليا' : 'Cairo / Riyadh'}</span>
-                </div>
+              {/* Contact Phone */}
+              <div className="space-y-3 text-sm text-[#D6C6A8]">
+                <a
+                  href="tel:01062260194"
+                  className="inline-flex items-center gap-3 px-4 py-2.5 rounded-full bg-[#23432E] border border-[#B49A63]/40 text-[#FFFDF7] hover:border-[#B49A63] hover:text-[#B49A63] transition-all shadow-xs"
+                >
+                  <Phone size={16} className="text-[#B49A63] flex-shrink-0" />
+                  <span className="font-bold tracking-wider" dir="ltr">01062260194</span>
+                </a>
               </div>
             </div>
 
-            {/* Social Links */}
-            <div className="flex gap-3 mt-8">
-              {[
-                { icon: FaTwitter, href: '#', label: 'Twitter' },
-                { icon: FaInstagram, href: '#', label: 'Instagram' },
-                { icon: FaFacebookF, href: '#', label: 'Facebook' },
-                { icon: FaLinkedinIn, href: '#', label: 'LinkedIn' },
-                { icon: FaYoutube, href: '#', label: 'YouTube' },
-              ].map(({ icon: Icon, href, label }) => (
-                <motion.a
-                  key={label}
-                  href={href}
-                  className="w-9 h-9 flex items-center justify-center rounded-xl transition-all duration-300 border border-[#B49A63]/30 bg-[#23432E] text-[#B49A63] hover:text-[#FFFDF7] hover:border-[#B49A63]"
-                  whileHover={{ y: -3, scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  aria-label={label}
-                >
-                  <Icon size={15} />
-                </motion.a>
-              ))}
+            {/* Official Social Links (Facebook & Instagram Only) */}
+            <div className="flex items-center gap-3 mt-6">
+              <span className="text-xs text-[#D6C6A8] font-bold">
+                {isRTL ? 'تابعنا على:' : 'Follow us:'}
+              </span>
+              <motion.a
+                href="https://www.facebook.com/share/1KdVJ4noLx/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 flex items-center justify-center rounded-xl transition-all duration-300 border border-[#B49A63]/40 bg-[#23432E] text-[#B49A63] hover:text-[#FFFDF7] hover:border-[#B49A63] hover:bg-[#1877F2]/20"
+                whileHover={{ y: -3, scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                aria-label="Facebook"
+              >
+                <FaFacebookF size={16} />
+              </motion.a>
+
+              <motion.a
+                href="https://www.instagram.com/dare_lrehab?vrfl=c3lwZnA3YmFwOW1u"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 flex items-center justify-center rounded-xl transition-all duration-300 border border-[#B49A63]/40 bg-[#23432E] text-[#B49A63] hover:text-[#FFFDF7] hover:border-[#B49A63] hover:bg-[#E4405F]/20"
+                whileHover={{ y: -3, scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                aria-label="Instagram"
+              >
+                <FaInstagram size={17} />
+              </motion.a>
             </div>
           </div>
 
@@ -162,13 +165,29 @@ export function Footer() {
 
         </div>
 
-        {/* ── Bottom Bar ── */}
-        <div className="pt-8 border-t border-[#D6C6A8]/20 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#D6C6A8]">
-          <p>
+        {/* ── Bottom Bar: Copyright & Created by Clickers Creations ── */}
+        <div className="pt-8 border-t border-[#D6C6A8]/20 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-[#D6C6A8]">
+          <p className="text-center md:text-right">
             {isRTL
               ? '© 2026 دار الرحاب للنشر والتوزيع. جميع الحقوق محفوظة.'
               : '© 2026 Dar Al-Rehab Publishing House. All rights reserved.'}
           </p>
+
+          {/* Clickers Creations Attribution */}
+          <div className="flex items-center gap-2 bg-[#23432E] px-4 py-2 rounded-full border border-[#B49A63]/30 shadow-xs">
+            <span className="text-[#D6C6A8] text-[11px]">
+              {isRTL ? 'تصميم وتطوير:' : 'Designed & Developed by:'}
+            </span>
+            <div className="inline-flex items-center gap-2 font-bold text-[#FFFDF7]">
+              <img
+                src="/clickers-logo.jpg"
+                alt="Clickers Creations"
+                className="w-5 h-5 rounded-md object-cover border border-[#B49A63]/40"
+              />
+              <span className="text-xs text-[#FFFDF7] tracking-wide">Clickers Creations</span>
+            </div>
+          </div>
+
           <div className="flex gap-6">
             <Link href="/about">
               <span className="hover:text-[#FFFDF7] cursor-pointer">
