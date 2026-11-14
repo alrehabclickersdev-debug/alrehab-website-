@@ -25,67 +25,47 @@ function HeroSection() {
 
   return (
     <section 
-      className="relative min-h-[90vh] lg:min-h-[96vh] flex items-center pt-28 pb-20 overflow-hidden bg-[#F5F0E3] bg-cover bg-center bg-no-repeat"
+      id="hero-section"
+      className="relative flex items-center overflow-hidden bg-[#F5F0E3] pt-24 pb-12 lg:min-h-[96vh] lg:pt-28 lg:pb-20"
       style={{
         backgroundImage: `url('/alrehab-bg.png')`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center center',
+        backgroundColor: '#F5F0E3',
       }}
     >
-      {/* Subtle overlay for mobile contrast if needed */}
-      <div className="absolute inset-0 bg-gradient-to-t from-[#F5F0E3]/70 via-transparent to-transparent lg:hidden pointer-events-none" />
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center min-h-[60vh]">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           
           {/* Spacer for the Left Side where the 3D Books & Pedestal live in the background image */}
           <div className="hidden lg:block lg:col-span-6" />
 
-          {/* Right Side: Interactive Action Area (aligned with the text in the background) */}
+          {/* Right Side: Interactive Action Area */}
           <motion.div
             className={`lg:col-span-6 flex flex-col ${isRTL ? 'text-right items-start' : 'text-left items-start'}`}
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
-            {/* Mobile-only visible headline (since on small screens background text may be covered or small) */}
-            <div className="block lg:hidden mb-6">
-              <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#EDE5D4]/90 border border-[#B49A63]/50 mb-4 shadow-sm backdrop-blur-md">
-                <span className="w-2 h-2 rounded-full bg-[#B49A63] animate-pulse" />
-                <span className="font-arabic text-xs font-bold text-[#B49A63] tracking-wider">
-                  {isRTL ? 'دار الرحاب للنشر والتوزيع' : 'Dar Al-Rehab Publishing House'}
-                </span>
-              </div>
+            {/* Mobile Spacer so the background photo at the top is completely visible without any overlapping */}
+            <div className="block lg:hidden w-full h-[52vw] sm:h-[46vw] max-h-[360px]" />
 
-              <h1 className="font-arabic font-extrabold text-4xl sm:text-5xl text-[#23432E] leading-[1.25] tracking-tight mb-4">
-                <span className="block">
-                  {isRTL ? 'من رحاب الفكرة...' : 'From the Realm of an Idea...'}
-                </span>
-                <span className="block text-[#B49A63] mt-2 font-serif italic">
-                  {isRTL ? 'إلى خلود الحكاية' : 'To the Eternity of a Story'}
-                </span>
-              </h1>
-
-              <p className="font-arabic text-base sm:text-lg text-[#263A2C]/80 leading-relaxed mb-6">
-                {isRTL
-                  ? 'نمنح الكلمات بيتاً، والأفكار طريقاً إلى القارئ. دار نشر أدبية عريقة تحتفي بجوهر الفكر، وسحر السرد، وبراعة الإبداع العربي.'
-                  : 'Providing words a sanctuary, and ideas an enduring path to the reader.'}
-              </p>
-            </div>
-
-            {/* Desktop Semantic Heading for SEO & Screen Readers */}
+            {/* Semantic Heading for SEO & Screen Readers */}
             <h1 className="sr-only">
               {isRTL ? 'دار الرحاب للنشر والتوزيع — من رحاب الفكرة إلى خلود الحكاية' : 'Dar Al-Rehab Publishing — From Idea to Story'}
             </h1>
+            <p className="sr-only">
+              {isRTL
+                ? 'نمنح الكلمات بيتاً، والأفكار طريقاً إلى القارئ. دار نشر أدبية عريقة تحتفي بجوهر الفكر، وسحر السرد، وبراعة الإبداع العربي.'
+                : 'Providing words a sanctuary, and ideas an enduring path to the reader.'}
+            </p>
 
             {/* Desktop spacer to push buttons right below the background graphic text */}
             <div className="hidden lg:block h-64 xl:h-72" />
 
             {/* CTA Buttons */}
-            <div className={`flex flex-wrap items-center gap-4 ${isRTL ? 'flex-row' : ''}`}>
-              <Link href="/store">
+            <div className={`flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 sm:gap-4 w-full sm:w-auto mt-2 lg:mt-0 ${isRTL ? 'sm:flex-row' : ''}`}>
+              <Link href="/store" className="w-full sm:w-auto">
                 <motion.span
-                  className="inline-flex items-center gap-3 px-8 py-4 rounded-full font-arabic font-bold text-sm bg-[#23432E] text-[#FFFDF7] shadow-xl shadow-[#23432E]/25 hover:bg-[#193A28] cursor-pointer transition-all border border-[#B49A63]/30"
+                  className="w-full sm:w-auto justify-center inline-flex items-center gap-3 px-8 py-4 rounded-full font-arabic font-bold text-sm bg-[#23432E] text-[#FFFDF7] shadow-xl shadow-[#23432E]/25 hover:bg-[#193A28] cursor-pointer transition-all border border-[#B49A63]/40"
                   whileHover={{ scale: 1.04, y: -2 }}
                   whileTap={{ scale: 0.97 }}
                 >
@@ -94,9 +74,9 @@ function HeroSection() {
                 </motion.span>
               </Link>
 
-              <Link href="/about">
+              <Link href="/about" className="w-full sm:w-auto">
                 <motion.span
-                  className="inline-flex items-center gap-2 px-7 py-4 rounded-full font-arabic font-bold text-sm text-[#23432E] bg-[#FFFDF7]/80 backdrop-blur-md border border-[#B49A63]/60 hover:bg-[#EDE5D4] cursor-pointer transition-all shadow-sm"
+                  className="w-full sm:w-auto justify-center inline-flex items-center gap-2 px-7 py-4 rounded-full font-arabic font-bold text-sm text-[#23432E] bg-[#FFFDF7]/90 backdrop-blur-md border border-[#B49A63]/60 hover:bg-[#EDE5D4] cursor-pointer transition-all shadow-sm"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
@@ -107,12 +87,12 @@ function HeroSection() {
             </div>
 
             {/* Editorial Mini Credo */}
-            <div className="mt-8 pt-5 border-t border-[#D6C6A8]/60 flex flex-wrap items-center gap-6 text-xs text-[#263A2C] font-arabic font-bold">
-              <div className="flex items-center gap-2 bg-[#FFFDF7]/60 backdrop-blur-sm px-3 py-1.5 rounded-full border border-[#D6C6A8]/40 shadow-xs">
+            <div className="mt-6 pt-4 border-t border-[#D6C6A8]/60 flex flex-wrap items-center gap-3 sm:gap-6 text-xs text-[#263A2C] font-arabic font-bold w-full">
+              <div className="flex items-center gap-2 bg-[#FFFDF7]/70 backdrop-blur-sm px-3.5 py-1.5 rounded-full border border-[#D6C6A8]/50 shadow-xs">
                 <CheckCircle2 size={15} className="text-[#B49A63]" />
                 <span>{isRTL ? 'طباعة فاخرة ومستدامة' : 'Fine Sustainable Printing'}</span>
               </div>
-              <div className="flex items-center gap-2 bg-[#FFFDF7]/60 backdrop-blur-sm px-3 py-1.5 rounded-full border border-[#D6C6A8]/40 shadow-xs">
+              <div className="flex items-center gap-2 bg-[#FFFDF7]/70 backdrop-blur-sm px-3.5 py-1.5 rounded-full border border-[#D6C6A8]/50 shadow-xs">
                 <CheckCircle2 size={15} className="text-[#B49A63]" />
                 <span>{isRTL ? 'تحكيم أدبي وفكري دقيق' : 'Rigorous Editorial Review'}</span>
               </div>

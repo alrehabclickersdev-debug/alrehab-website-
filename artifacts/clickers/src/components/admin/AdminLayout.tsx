@@ -51,9 +51,11 @@ function AdminSidebar({
     >
       {/* Header */}
       <div className="px-4 py-5 border-b border-white/5 flex items-center gap-3">
-        <div className="w-9 h-9 flex-shrink-0 rounded-xl admin-logo-icon flex items-center justify-center shadow-lg text-sm bg-emerald-950 text-amber-400 border border-amber-600/40">
-          <span>📚</span>
-        </div>
+        <img
+          src="/logo.png"
+          alt="دار الرحاب"
+          className="w-9 h-9 flex-shrink-0 rounded-xl object-cover shadow-lg border border-amber-600/40 p-0.5 bg-emerald-950"
+        />
         {!collapsed && (
           <motion.div
             initial={{ opacity: 0 }}
@@ -227,9 +229,11 @@ export function AdminLayout({ children }: { children: ReactNode }) {
         {/* Top Navbar */}
         <header className="px-6 py-4 border-b border-white/10 bg-[#161b22]/95 backdrop-blur-xl flex items-center justify-between gap-4 sticky top-0 z-30 shadow-lg">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-emerald-950 border border-amber-600/40 flex items-center justify-center text-base">
-              📚
-            </div>
+            <img
+              src="/logo.png"
+              alt="دار الرحاب"
+              className="w-8 h-8 rounded-lg object-cover border border-amber-600/40"
+            />
             <div>
               <h2 className="text-white font-bold text-sm font-arabic leading-tight">لوحة إدارة دار الرحاب</h2>
               <p className="text-slate-400 text-[10px] uppercase tracking-wider font-arabic">

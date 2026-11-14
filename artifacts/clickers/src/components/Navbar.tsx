@@ -74,21 +74,11 @@ export function Navbar() {
                 data-testid="nav-logo"
               >
                 {/* Emblem */}
-                <div
-                  className="w-11 h-11 rounded-2xl flex items-center justify-center shadow-sm flex-shrink-0"
-                  style={{
-                    background: 'linear-gradient(135deg, #23432E 0%, #193A28 100%)',
-                    border: '1px solid #B49A63',
-                    color: '#B49A63',
-                  }}
-                >
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z" />
-                    <path d="M6 6h10" />
-                    <path d="M6 10h10" />
-                    <path d="M6 14h6" />
-                  </svg>
-                </div>
+                <img
+                  src="/logo.png"
+                  alt="دار الرحاب للنشر والتوزيع"
+                  className="w-11 h-11 rounded-2xl object-cover shadow-sm flex-shrink-0 border border-[#B49A63]/60 p-0.5 bg-[#23432E]"
+                />
 
                 {/* Typography */}
                 <div className={`flex flex-col leading-none ${isRTL ? 'text-right' : 'text-left'}`}>

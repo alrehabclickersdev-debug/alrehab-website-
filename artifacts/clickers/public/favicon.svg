@@ -1,3 +1,34 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <image href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsSAAALEgHS3X78AAADrUlEQVRYhe2V/U+TVxTHn/9hWbI/YNkPyxIXnSYsM3HJ/oZli2OArDJoijJxChvq4hxRphCakblFkvkCyotd7WAGHBOHKC/KAhNtJi8iK0oFKX152j59ns9yT1eGQxIiS7pk3OSktzn3nvM95/u959HuPLhJOk37zddLOk3zBUZJp2mGGSadpunxOdJpWtQIkE7T1gBE/6sUxBLzGFZI9nEzKP9XkyglumUBRGKPxcLRWTmofueCD8UXCE0T0mdWBQBiWJaObswtBaAbjzHMKJDANA3Uut53BfvOD+ViSdlu3C1NmESeufqh4RuMjA8v6aSmqoY4Pf2/0N7RQpOrjgf+e/TdvIqjKF8AfLJvDxdam58JgB5X8cHtaZKYYBCM+BeAaSF9FjAledulHzhdV8v4fS/9A91LAFjocknR8TQ+/2nJ4qK0dbTQ6KrjVP0JRse9AihmBMWvGVaYUPTRXyhdDAz1LFDg+KhgSQfU+ASLhLV8N1ICVuJVoAdv9dN5tZ3unssMDPZwqu4Ek1MjEk9TCZNITco+K6Xmm2rZX+vtpHCXPQlg/x5cnnMC7GK7h+dfeA6Xp0F8T+uE6tDM3BQzcz4C4Wlpu8t9jq5rP3F3bJiiYgfeu4MkCKNtff8dUuvz8oM0u+tk39ffR0GhTS5/eqCES5dbGb13m+K9RYxNeLHl5/CrdCv+BAgVtNJZwcaMDWx6/TVyPniPWEzHWVPJ2cYz/OGbZP/BEiYnJySP9saWDL7+1kmD6ww5tkwKHDaavq8X5Rfv3SmH8h02PD+e5/7UCLaCHE7X1/Ju5tt0drULx4sBqLb+fOUizpoqorEg9h15VFSWk5uXzbbtWXxZVc7mNzOoclZQ33gSbd2GV6RSldx1oYEjx74gNy+L0n0f4x0ZEr49reeFR8Vna5sbe2Ee6ze9KokW06Bmh+K9u7cTR5HSDzS7zpJty6T25HEOHT4gRVXXHBVad+yyo22zZclB0zSl3Yr/1EqYOpH4LJaVwELNCZN4PDknsnO30nW9Q+4IgISqPuk7cuwQ1V8dFXqiMSXa5Zf2++gt9Liadn4RTzAyw3z4kZgSZ+q9Kn++Yztb3trMSy+/SO13xxeqV5UrKkrLdrN+4zqhbz7kl9egnvnfsZNx1W9qr5lWZEVvWp3xPRyTGTE2cQc9Ok88EVy4q5JNTY+LUOfDfhHjij5G+gqSL1a40gHoC6Ce8FtJv9LBSuNqq/nA/BumrQGIrlFgrIkw8P9+hn8CR1TYVAltNJcAAAAASUVORK5CYII=" width="32" height="32"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- Background: deep forest green rounded square -->
+  <rect width="64" height="64" rx="14" fill="#23432E"/>
+
+  <!-- Outer arch / dome — antique gold -->
+  <path d="M14 38 Q14 18 32 16 Q50 18 50 38" stroke="#B49A63" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+
+  <!-- Book base — open pages spreading outward -->
+  <!-- Left page -->
+  <path d="M32 44 L14 40 L14 28 Q23 30 32 34 Z" fill="#B49A63" opacity="0.9"/>
+  <!-- Right page -->
+  <path d="M32 44 L50 40 L50 28 Q41 30 32 34 Z" fill="#C5AD7D" opacity="0.9"/>
+  <!-- Book spine line (center) -->
+  <line x1="32" y1="34" x2="32" y2="44" stroke="#23432E" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Left page lines (text simulation) -->
+  <line x1="18" y1="33" x2="28" y2="35.5" stroke="#23432E" stroke-width="0.9" stroke-linecap="round" opacity="0.6"/>
+  <line x1="18" y1="36" x2="28" y2="38" stroke="#23432E" stroke-width="0.9" stroke-linecap="round" opacity="0.6"/>
+  <line x1="18" y1="39" x2="28" y2="40.5" stroke="#23432E" stroke-width="0.9" stroke-linecap="round" opacity="0.6"/>
+
+  <!-- Right page lines (text simulation) -->
+  <line x1="46" y1="33" x2="36" y2="35.5" stroke="#23432E" stroke-width="0.9" stroke-linecap="round" opacity="0.6"/>
+  <line x1="46" y1="36" x2="36" y2="38" stroke="#23432E" stroke-width="0.9" stroke-linecap="round" opacity="0.6"/>
+  <line x1="46" y1="39" x2="36" y2="40.5" stroke="#23432E" stroke-width="0.9" stroke-linecap="round" opacity="0.6"/>
+
+  <!-- Gold star / ornament at apex of arch -->
+  <circle cx="32" cy="15.5" r="2.5" fill="#B49A63"/>
+  <line x1="32" y1="11.5" x2="32" y2="19.5" stroke="#B49A63" stroke-width="1.2"/>
+  <line x1="28" y1="15.5" x2="36" y2="15.5" stroke="#B49A63" stroke-width="1.2"/>
+
+  <!-- Subtle glow dots on arch corners -->
+  <circle cx="14" cy="38" r="1.5" fill="#B49A63"/>
+  <circle cx="50" cy="38" r="1.5" fill="#B49A63"/>
 </svg>

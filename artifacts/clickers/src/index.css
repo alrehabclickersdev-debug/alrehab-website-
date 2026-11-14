@@ -305,3 +305,22 @@ body {
     font-size: 16px !important; 
   }
 }
+
+/* ══════════════════════════════════════════════════
+   HERO SECTION RESPONSIVE BACKGROUND
+   Mobile & Tablet: 100% width uncropped, starting below navbar.
+   Desktop: Full-bleed cover.
+══════════════════════════════════════════════════ */
+#hero-section {
+  background-repeat: no-repeat !important;
+  background-color: #F5F0E3 !important;
+  background-size: 100% auto !important;
+  background-position: center 5rem !important;
+}
+
+@media (min-width: 1024px) {
+  #hero-section {
+    background-size: cover !important;
+    background-position: center center !important;
+  }
+}
