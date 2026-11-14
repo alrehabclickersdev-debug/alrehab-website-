@@ -168,7 +168,7 @@ export function Navbar() {
                 {isRTL ? 'EN' : 'عربي'}
               </button>
 
-              {/* User Authentication Menu */}
+              {/* User Authentication Menu (Top Bar) */}
               {profile ? (
                 <div className="relative">
                   <button
@@ -179,7 +179,7 @@ export function Navbar() {
                     className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#D6C6A8] bg-[#FFFDF7] text-[#263A2C] text-xs font-bold hover:border-[#B49A63] transition-all"
                   >
                     <User size={14} className="text-[#B49A63]" />
-                    <span className="max-w-[80px] truncate">{profile.full_name || 'حسابي'}</span>
+                    <span className="max-w-[70px] sm:max-w-[100px] truncate">{profile.full_name || 'حسابي'}</span>
                     <ChevronDown size={12} className="text-[#777363]" />
                   </button>
 
@@ -218,8 +218,9 @@ export function Navbar() {
                 </div>
               ) : (
                 <Link href="/auth">
-                  <span className="hidden sm:inline-flex px-4 py-2 text-xs font-bold text-[#23432E] hover:text-[#B49A63] cursor-pointer font-arabic transition-colors">
-                    {isRTL ? 'تسجيل الدخول' : 'Sign In'}
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[#B49A63]/60 bg-[#FFFDF7] hover:bg-[#EDE5D4] text-xs font-bold text-[#23432E] cursor-pointer font-arabic transition-all shadow-xs">
+                    <User size={13} className="text-[#B49A63]" />
+                    <span>{isRTL ? 'دخول' : 'Sign In'}</span>
                   </span>
                 </Link>
               )}
@@ -246,9 +247,87 @@ export function Navbar() {
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="lg:hidden bg-[#FFFDF7] border-b border-[#D6C6A8] px-6 py-6 shadow-xl font-arabic"
+              className="lg:hidden bg-[#FFFDF7] border-b border-[#D6C6A8] px-6 py-5 shadow-xl font-arabic max-h-[85vh] overflow-y-auto"
             >
               <div className="flex flex-col gap-3">
+
+                {/* ── Mobile User / Auth Card at top of Drawer ── */}
+                {profile ? (
+                  <div className="p-4 rounded-2xl bg-[#EDE5D4]/60 border border-[#D6C6A8] mb-1 flex flex-col gap-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-[#23432E] text-[#B49A63] font-bold flex items-center justify-center text-sm shadow-sm border border-[#B49A63]/40 flex-shrink-0">
+                        {(profile.full_name || profile.email || 'U')[0].toUpperCase()}
+                      </div>
+                      <div className="flex-1 min-w-0 text-right">
+                        <p className="font-bold text-sm text-[#23432E] truncate">
+                          {profile.full_name || (isRTL ? 'مرحباً بك' : 'Welcome')}
+                        </p>
+                        <p className="text-xs text-[#777363] truncate">{profile.email}</p>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2">
+                      {isAdmin && (
+                        <Link href="/admin">
+                          <span
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className="flex items-center justify-center gap-2 py-2 px-3 rounded-xl text-xs font-bold bg-[#23432E] text-[#FFFDF7] cursor-pointer"
+                          >
+                            <LayoutDashboard size={14} className="text-[#B49A63]" />
+                            <span>{isRTL ? 'لوحة التحكم' : 'Admin'}</span>
+                          </span>
+                        </Link>
+                      )}
+                      <Link href="/my-orders" className={isAdmin ? '' : 'col-span-2'}>
+                        <span
+                          onClick={() => setIsMobileMenuOpen(false)}
+                          className="flex items-center justify-center gap-2 py-2 px-3 rounded-xl text-xs font-bold bg-[#FFFDF7] text-[#23432E] border border-[#D6C6A8] hover:bg-[#EDE5D4] cursor-pointer"
+                        >
+                          <User size={14} className="text-[#B49A63]" />
+                          <span>{isRTL ? 'طلباتي' : 'My Orders'}</span>
+                        </span>
+                      </Link>
+                    </div>
+
+                    <button
+                      onClick={() => {
+                        signOut();
+                        setIsMobileMenuOpen(false);
+                      }}
+                      className="w-full flex items-center justify-center gap-2 py-2 rounded-xl text-xs font-bold text-red-700 bg-red-50 hover:bg-red-100 border border-red-200 transition-colors"
+                    >
+                      <LogOut size={14} />
+                      <span>{isRTL ? 'تسجيل الخروج' : 'Sign Out'}</span>
+                    </button>
+                  </div>
+                ) : (
+                  <div className="p-4 rounded-2xl bg-[#EDE5D4]/60 border border-[#D6C6A8] mb-1 flex flex-col gap-2.5">
+                    <p className="text-xs text-[#777363] text-center font-medium">
+                      {isRTL ? 'سجّل الدخول للوصول إلى طلباتك وإصداراتك' : 'Sign in to access your orders and library'}
+                    </p>
+                    <div className="grid grid-cols-2 gap-2">
+                      <Link href="/auth">
+                        <span
+                          onClick={() => setIsMobileMenuOpen(false)}
+                          className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-full text-xs font-bold bg-[#23432E] text-[#FFFDF7] shadow-sm hover:bg-[#193A28] cursor-pointer"
+                        >
+                          <User size={13} className="text-[#B49A63]" />
+                          <span>{isRTL ? 'تسجيل الدخول' : 'Sign In'}</span>
+                        </span>
+                      </Link>
+                      <Link href="/auth">
+                        <span
+                          onClick={() => setIsMobileMenuOpen(false)}
+                          className="flex items-center justify-center py-2.5 px-3 rounded-full text-xs font-bold bg-[#FFFDF7] text-[#23432E] border border-[#B49A63]/70 hover:bg-[#EDE5D4] cursor-pointer"
+                        >
+                          <span>{isRTL ? 'إنشاء حساب' : 'Register'}</span>
+                        </span>
+                      </Link>
+                    </div>
+                  </div>
+                )}
+
+                {/* ── Navigation Links ── */}
                 {navLinks.map((link) => (
                   <Link key={link.label} href={link.href}>
                     <span
@@ -262,7 +341,7 @@ export function Navbar() {
                   </Link>
                 ))}
 
-                <div className="pt-4 flex flex-col gap-3">
+                <div className="pt-3 flex flex-col gap-2.5">
                   <Link href="/store">
                     <span
                       onClick={() => setIsMobileMenuOpen(false)}
